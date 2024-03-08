@@ -1,3 +1,12 @@
-```{r}
+---
+title: "DATA 2010 Group Project"
+author: "Lucas Berzuk, Ethan Robson, Hugo Ng, Rodell Salonga"
+date: "Due on 015/03/2024"
+output: pdf_document
+header-includes:
+  - \linespread{1.3}
+---
 
+```{r}
+# This will be the RMD file that we use for all of our work
 ```
