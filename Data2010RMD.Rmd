@@ -31,5 +31,18 @@ ObesityDataset
 ```
 
 ```{r}
+# Descriptive analysis
+# Background information 
+# Where it cam from what its telling us what its trying to achieve/show
+```
 
+```{r}
+# Current status
+# What have we done to the data (exploratory analysis) 
+# What we found etc
+```
+
+```{r}
+# Future direction
+# What do we wanna do/goal
 ```
