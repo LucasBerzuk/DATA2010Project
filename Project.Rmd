@@ -1,0 +1,86 @@
+---
+title: "DATA 2010 Project"
+author: "Ethan Robson, 07891904, A02"
+date: "2024-03-08"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+
+```
+
+```{r}
+
+data = read.csv("obesity.csv")
+
+str(data)
+
+unique(data$NObeyesdad)
+
+mapping = function(x){
+  new_vars = c()
+  
+  for(i in 1:length(x)){
+    
+    
+    if(x[i] == "Insufficient_Weight" || x[i] == "Normal_Weight"){
+      new_vars = c(new_vars, "NON")
+    } else if(x[i] == "Overweight_Level_I" || x[i] == "Overweight_Level_II"){
+      new_vars = c(new_vars, "OVR")
+    } else {
+      new_vars = c(new_vars, "OBE")
+    }
+  }
+  return(new_vars)
+}
+
+data = data %>% 
+  mutate(NObeyesdad = factor(NObeyesdad, levels = c("Insufficient_Weight", "Normal_Weight",
+                                                    "Overweight_Level_I", "Overweight_Level_II",
+                                                    "Obesity_Type_I", "Obesity_Type_II",
+                                                    "Obesity_Type_III")),
+         CALC = factor(CALC),
+         WEIGHT = mapping(NObeyesdad))
+
+data %>% 
+  ggplot(aes(x = NObeyesdad)) +
+  geom_bar() +
+  theme(axis.text.x=element_text(size=7)) +
+  xlab("Weight Category")
+
+data %>% 
+  ggplot(aes(x = NObeyesdad, fill = NObeyesdad)) +
+  geom_bar() +
+  theme(legend.position = "top",
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) +
+  facet_grid(~ CALC)
+
+data %>% 
+  ggplot(aes(x = WEIGHT, fill = WEIGHT)) +
+  geom_bar() +
+  theme(legend.position = "top",
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) +
+  facet_grid(~ CALC)
+  
+data %>% 
+  ggplot(aes(x = NObeyesdad, fill = NObeyesdad)) +
+  geom_bar() +
+  theme(legend.position = "top",
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) +
+  facet_grid(~ SMOKE)
+
+data %>% 
+  ggplot(aes(x = CALC, fill = CALC)) +
+  geom_bar() +
+  theme(legend.position = "top",
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) +
+  facet_grid(~ NObeyesdad)
+
+
+```
