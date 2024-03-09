@@ -21,3 +21,15 @@ knitr::opts_chunk$set(echo = TRUE,tidy.opts=list(width.cutoff=90), tidy=TRUE)
 # Rodell test
 # Hugo second test 
 ```
+
+```{r}
+# No one touch this
+library (readr)
+urlfile = "https://github.com/LucasBerzuk/DATA2010Project/blob/main/ObesityDataSet_raw_and_data_sinthetic.csv"
+ObesityDataset = ObesityDataSet_raw_and_data_sinthetic
+ObesityDataset
+```
+
+```{r}
+
+```
