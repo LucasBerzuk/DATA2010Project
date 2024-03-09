@@ -34,6 +34,8 @@ ObesityDataset
 # Descriptive analysis
 # Background information 
 # Where it cam from what its telling us what its trying to achieve/show
+# Talk about synthetically generated data
+# Use like 1 or 2 graphs from ethans pre analysis maybe
 ```
 
 ```{r}
