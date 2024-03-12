@@ -57,7 +57,7 @@ NewObesityDataset = ObesityDataset |> mutate(NObeyesdad = factor(NObeyesdad, lev
 
 NewObesityDataset |> ggplot(aes(x = WEIGHT, fill = WEIGHT)) + geom_bar() +
   theme(legend.position = "top", axis.text.x=element_blank(), 
-        axis.ticks.x=element_blank()) + facet_grid(~ CALC)
+        axis.ticks.x=element_blank()) + facet_grid(~ CALC) 
 ```
 
 *The direction that we want to go with this is... (we need to come to a conclusion here*
