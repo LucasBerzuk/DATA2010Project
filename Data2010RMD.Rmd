@@ -60,7 +60,4 @@ NewObesityDataset |> ggplot(aes(x = WEIGHT, fill = WEIGHT)) + geom_bar() +
         axis.ticks.x=element_blank()) + facet_grid(~ CALC)
 ```
 
-```{r}
-# Future direction
-# What do we wanna do/goal
-```
+*The direction that we want to go with this is... (we need to come to a conclusion here*
