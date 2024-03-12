@@ -13,7 +13,7 @@ library(tidyverse)
 
 ```{r}
 
-data = ObesityDataSet_raw_and_data_sinthetic
+data = read.csv("ObesityDataSet_raw_and_data_sinthetic.csv")
 
 str(data)
 
