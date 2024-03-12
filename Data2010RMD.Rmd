@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE,tidy.opts=list(width.cutoff=90), tidy=TRUE)
 # IMPORTANT
 # Before being able to run this code you have to click on the .csv
 # In the repository, click import dataset, and then import
-ObesityDataset = ObesityDataSet_raw_and_data_sinthetic
+ObesityDataset = read.csv("ObesityDataSet_raw_and_data_sinthetic.csv")
 ```
 
 *This data comes from a study performed in Mexico, Peru and Colombia. It has 17 attributes and 2111 data points. It is the study of how peoples eating habits and their physical condition has an effect on their level of obesity. It is important to not that up to 77% of this data has been synthetically generated because of a balancing issue so this is not all 100% real data.* 
