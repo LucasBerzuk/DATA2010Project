@@ -14,19 +14,15 @@ knitr::opts_chunk$set(echo = TRUE,tidy.opts=list(width.cutoff=90), tidy=TRUE)
 
 ```{r}
 # No one touch this
-# IMPORTNAT
+# IMPORTANT
 # Before being able to run this code you have to click on the .csv
 # In the repository, click import dataset, and then import
 ObesityDataset = ObesityDataSet_raw_and_data_sinthetic
 ```
 
-```{r}
-# Descriptive analysis
-# Background information 
-# Where it cam from what its telling us what its trying to achieve/show
-# Talk about synthetically generated data
-# Use like 1 or 2 graphs from ethans pre analysis maybe
-```
+*This data comes from a study performed in Mexico, Peru and Colombia. It has 17 attributes and 2111 data points. It is the study of how peoples eating habits and their physical condition has an effect on their level of obesity. It is important to not that up to 77% of this data has been synthetically generated because of a balancing issue so this is not all 100% real data.* 
+*There are many variables that have unclear descriptions as headers so here is a list for clarity. Frequent consumption of high caloric food (FAVC), Frequency of consumption of vegetables (FCVC), Number of main meals (NCP), Consumption of food between meals (CAEC), Consumption of water daily (CH20), and Consumption of alcohol (CALC). The attributes related with the physical condition are: Calories consumption monitoring (SCC), Physical activity frequency (FAF), Time using technology devices (TUE), Transportation used (MTRANS)*
+*This is where we are currently at with analyzing the data.*
 
 ```{r}
 # Current status
