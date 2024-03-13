@@ -19,8 +19,8 @@ library(ggplot2)
 ObesityDataset = read.csv("ObesityDataSet_raw_and_data_sinthetic.csv")
 
 # A Plot of how many people analyzed were in each weight category
-ObesityDataset |> ggplot(aes(x = NObeyesdad)) + geom_bar() + 
-  theme(axis.text.x=element_text(size=7)) + xlab("Weight Category")
+ObesityDataset |> ggplot(aes(x = NObeyesdad, fill = NObeyesdad)) + geom_bar() + 
+  theme(axis.text.x=element_text(size=6), legend.position = "none") + xlab("Weight Category")
 ```
 *At this stage in our data analysis, we are observing how many people fall under each weight category and what the possible reasons are. The count of samples in each weight category is shown to be relatively even based on the plot shown above, so we know that there are many data points in each weight category that we can analyze to figure out possible reasons that people are overweight (or at least what factors correlate to being overweight). What we have been able to find out thus far (based on another plot that has not been included here) is that the amount of people that 'sometimes' drink alcohol are always the majority in every weight category, with the people that answered 'no' always being the second highest answer. Minimal people have answered 'frequently' and 'always', but we believe that this data may be skewed as a result of the data being collected voluntarily by members of the public who may not feel comfortable disclosing an alcohol problem which may be seen as a negative trait. We also noticed that in the 'Overweight_Level_I', 'Obesity_Type_II' and 'Obesity_Type_III' Category, the number of people that answer 'sometimes' for alcohol is significantly higher than the number of people that answer 'no', compared to the rest of the categories.*
 
