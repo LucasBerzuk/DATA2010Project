@@ -32,6 +32,7 @@ mapping2 = function(x){
     }
   }
   return(new_vars)
+  
 }
 factored = data %>% mutate(BMI = Weight / (Height^2),
                            CALC = factor(CALC, levels = c("no", "Sometimes", 
