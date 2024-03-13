@@ -8,12 +8,51 @@ output: pdf_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
+library(ggplot2)
+data = read.csv("ObesityDataSet_raw_and_data_sinthetic.csv")
+```
+
+
+```{r corelations}
+
+mapping2 = function(x){
+  new_vars = c()
+  
+  for(i in 1:length(x)){
+    
+    
+    if(x[i] == "no"){
+      new_vars = c(new_vars, 1)
+    } else if(x[i] == "Sometimes"){
+      new_vars = c(new_vars, 2)
+    } else if(x[i] == "Frequently"){
+      new_vars = c(new_vars, 3)
+    } else {
+      new_vars = c(new_vars, 4)
+    }
+  }
+  return(new_vars)
+}
+factored = data %>% mutate(BMI = Weight / (Height^2),
+                           CALC = factor(CALC, levels = c("no", "Sometimes", 
+                                                          "Frequently", "Always")),
+                           CALCN = mapping2(CALC))
+
+factored %>% ggplot(aes(x = CALC, y = BMI)) +
+  geom_point()
+
+cor(factored$CALCN, factored$BMI, method = "spearman")
+
+unique(factored$CALC)
+
+str(factored)
 
 ```
 
+
 ```{r}
 
-data = read.csv("ObesityDataSet_raw_and_data_sinthetic.csv")
+
 
 str(data)
 
