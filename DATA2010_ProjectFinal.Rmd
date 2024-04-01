@@ -51,6 +51,6 @@ We then build classification models including...
 - Essay type write up for the conclusion
 
 ## References
-[1. Obesity Dataset](https://archive.ics.uci.edu/dataset/544/estimation+of+obesity+levels+based+on+eating+habits+and+physical+condition)
+[1. Estimation of Obesity Levels Based On Eating Habits and Physical Condition](https://archive.ics.uci.edu/dataset/544/estimation+of+obesity+levels+based+on+eating+habits+and+physical+condition)
 
-[2. Obesity Stats Canada](https://www.statcan.gc.ca/o1/en/plus/5742-overview-weight-and-height-measurements-world-obesity-day)
+[2. An overview of weight and height measurements on World Obesity Day](https://www.statcan.gc.ca/o1/en/plus/5742-overview-weight-and-height-measurements-world-obesity-day)
