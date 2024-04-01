@@ -17,7 +17,7 @@ April 5, 2024
 \end{center} 
 
 ## Introduction
-- Talk about the data analysis and probably a few other things
+- Talk about the data analysis and probably a few other things, maybe like where we were gojng to go with it but then what changed
 
 ## Methods
 - Not sure what goes here, maybe our methods we used to analyze the data (i.e. the regression and stuff that we plan to do)
