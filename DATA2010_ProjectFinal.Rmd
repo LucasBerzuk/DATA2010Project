@@ -1,0 +1,32 @@
+---
+output:
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, tidy.opts=list(width.cutoff=90), tidy=TRUE)
+```
+\begin{center}
+\Huge \textbf{Data 2010 Project}
+
+\large Lucas Berzuk, Ethan Robson, Hugo Ng, Rodell Salonga
+
+April 5, 2024
+
+\end{center} 
+
+## Introduction
+- Talk about the data analysis and probably a few other things
+
+## Methods
+- Not sure what goes here, maybe our methods we used to analyze the data (i.e. the regression and stuff that we plan to do)
+
+## Results
+- Just the results from all of the shit we do to the data
+
+## Conclusions
+- Essay type write up for the conclusion
+
+## References
+- Link the data set probably and any other resources that we use
