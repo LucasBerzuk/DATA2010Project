@@ -19,8 +19,29 @@ April 5, 2024
 ## Introduction
 - Talk about the data analysis and probably a few other things, maybe like where we were gojng to go with it but then what changed
 
+Obesity is a chronic disease that is defined by having excessive amount of body fat. It increases the risk of other diseases and health problems including heart disease, high blood pressure, diabetes and certain cancers. First world countries are experienceing an epedemic of obesity in recent years. This includes Canada, which reported a 30% obesity rate out of all canaidian adults, an increase from the 21% reported in 2003. There must be a change and this includes diagnosing obesity early on for people and providing the preventative therapies to decrease body fat percentage. This involves measuring levels of obesity in people. 
+
+There are many different tools for measuring obesity levels, these include the body mass index, waist-to-hip ratio, skinfold thickness, and other more costly and intense body fat measuring procedures. The most common measure is the body mass index, BMI for short, which is calculated by using an individuals weight and height, with the following formula: $BMI = \frac{weight}{height^2}$. However in many cases the height and weght of individuals are not available in the diagnossing of obesity level. 
+
+In this paper we investigate different models that can be to predict obesity levels based on other variables other than height and weight. The models will be based on the follwing variables.
+
+We build various regression model with the target variable being BMI...
+
+We then build classification models including... 
+
+
+- Talk about our data and preprocessing stuff
+
+
 ## Methods
 - Not sure what goes here, maybe our methods we used to analyze the data (i.e. the regression and stuff that we plan to do)
+
+## Regression
+
+
+## Classifiation 
+
+
 
 ## Results
 - Just the results from all of the shit we do to the data
