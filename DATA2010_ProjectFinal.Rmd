@@ -2,6 +2,7 @@
 output:
   pdf_document: default
   word_document: default
+urlcolor: blue
 ---
 
 ```{r setup, include=FALSE}
@@ -19,7 +20,7 @@ April 5, 2024
 ## Introduction
 - Talk about the data analysis and probably a few other things, maybe like where we were gojng to go with it but then what changed
 
-Obesity is a chronic disease that is defined by having excessive amount of body fat. It increases the risk of other diseases and health problems including heart disease, high blood pressure, diabetes and certain cancers. First world countries are experiencing an epidemic of obesity in recent years. This includes Canada, which reported a 30% obesity rate out of all Canadian adults, an increase from the 21% reported in 2003 [1]. There must be a change and this includes diagnosing obesity early on for people and providing the preventative therapies to decrease body fat percentage. This involves measuring levels of obesity in people. 
+Obesity is a chronic disease that is defined by having excessive amount of body fat. It increases the risk of other diseases and health problems including heart disease, high blood pressure, diabetes and certain cancers. First world countries are experiencing an epidemic of obesity in recent years. This includes Canada, which reported a 30% obesity rate out of all Canadian adults, an increase from the 21% reported in 2003 [2]. There must be a change and this includes diagnosing obesity early on for people and providing the preventative therapies to decrease body fat percentage. This involves measuring levels of obesity in people. 
 
 There are many different tools for measuring obesity levels, these include the body mass index, waist-to-hip ratio, skin fold thickness, and other more costly and intense body fat measuring procedures. The most common measure is the body mass index, BMI for short, which is calculated by using an individuals weight and height, with the following formula: $BMI = \frac{weight}{height^2}$. However in many cases the height and weight of individuals are not available in the diagnosing of obesity level. 
 
@@ -50,6 +51,6 @@ We then build classification models including...
 - Essay type write up for the conclusion
 
 ## References
-- Link the data set probably and any other resources that we use
+[1. Obesity Dataset](https://archive.ics.uci.edu/dataset/544/estimation+of+obesity+levels+based+on+eating+habits+and+physical+condition)
 
-[1. Obesity stats](https://www.statcan.gc.ca/o1/en/plus/5742-overview-weight-and-height-measurements-world-obesity-day)
+[2. Obesity Stats Canada](https://www.statcan.gc.ca/o1/en/plus/5742-overview-weight-and-height-measurements-world-obesity-day)
