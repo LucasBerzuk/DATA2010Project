@@ -38,7 +38,10 @@ We then build classification models including...
 - Not sure what goes here, maybe our methods we used to analyze the data (i.e. the regression and stuff that we plan to do)
 
 ## Regression
-
+```{r}
+data = read.csv("ObesityDataSet_raw_and_data_sinthetic.csv")
+# Do regression on like gender and age and alc consumption and family history etc. OR maybe do regression n all variables but just do a bunch of different types of regression.
+```
 
 ## Classifiation 
 
