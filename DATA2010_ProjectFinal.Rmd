@@ -60,37 +60,37 @@ BMI = trainData$Weight / (trainData$Height ^2)
 ```
 For regression we first started off by performing standard linear regression with BMI where $BMI = \frac{weight}{height^2}$, on every variable that was in the dataset (aside from height and weight because that it what is used in BMI). For the categorical variables we had to factor them before performing regression because otherwise we would not be able to test them. These are the RMSE values that we found for every variable in the dataset.
 
-1. *Gender* = 7.933141
-2. *Age* = 8.138466
-3. *History of overweight* = 8.732148
-4. *Freq consumption of high caloric food* = 8.245465
-5. *Freq consumption of vegetables* = 8.07324
-6. *Number of main meals* = 7.960129
-7. *Consumption of food between meals* = 8.789884
-8. *Smoke* = 7.956062
-9. *Consumption of water* = 7.990943
-10. *Calorie consumption monitoring* = 8.083427
-11. *Freq of physical activity* = 8.094464
-12. *Time using electronics* = 7.972349
-13. *Consumption of alcohol* = 8.203673
-14. *Transportation used* = 8.012741
+1. *Gender* = 7.939414 
+2. *Age* = 8.178174 
+3. *History of overweight* = 9.08678 
+4. *Freq consumption of high caloric food* = 8.134233 
+5. *Freq consumption of vegetables* = 8.167971 
+6. *Number of main meals* = 7.932018 
+7. *Consumption of food between meals* = 8.807099 
+8. *Smoke* = 7.929959 
+9. *Consumption of water* = 8.065398 
+10. *Calorie consumption monitoring* = 8.106003 
+11. *Freq of physical activity* = 8.109581 
+12. *Time using electronics* = 7.973657 
+13. *Consumption of alcohol* = 8.130043 
+14. *Transportation used* = 8.07459
 
-Noticing that *Gender*, *Number of main meals*, *Smoke*, *Consumption of water* and *Time using electronics* were the variables that lead to the lowest RMSE values (under 8), we decided to do spline regression on the 3 numerical variables out of these 5 to see if that would improve the model any further. These were the results:
+Noticing that *Gender*, *Number of main meals*, *Smoke* and *Time using electronics* were the variables that lead to the lowest RMSE values (under 8), we decided to do spline regression on the 2 numerical variables out of these 4 to see if that would improve the model any further. These were the results:
 
-1. *Number of main meals* = 8.324037 
-2. *Consumption of water* = 8.504096 
-3. *Time using electronics* = 8.341119
+1. *Number of main meals* = 8.540398  
+2. *Time using electronics* = 8.488051
 
 It turns out that spline regression did not improve the error in our case so we had to try something else.
 
-We moved to attempt Lasso regression to yet again try and improve our models. When performing lasso regression on the 5 original variables that all had RMSE under 8, this is what we got.
+We moved to attempt Lasso regression to yet again try and improve our models. When performing lasso regression on the 4 original variables that all had RMSE under 8, this is what we got.
 
-**Lasso regression** = 8.052512 
+**Lasso regression** = 7.968656  
 
-Once again we still were unable to improve the RMSE value. 
+This is a good RMSE values but it is not lower than any 1 of the 4 original RMSE values gained from using linear regression.
+
 *Maybe try knn here now*
 
-Here are the graphs of the cubic regression models for the 5 original variables that we were trying to improve. 
+Here are the graphs of the cubic regression models for the 4 original variables that we were trying to improve. 
 ```{r, fig.width=10, fig.height=8, out.width='50%', out.height='50%'}
 # -----------------------------------------
 # Lets graph the regression models
@@ -123,17 +123,6 @@ trainData |>
   mutate(fitted = fitted(m)) |> 
   ggplot(aes(x = SMOKE)) + geom_point(aes(y = BMI), size = 1) + 
   ggtitle("Relationship between SMOKE and BMI")
-# -----------------------------------------
-
-# -----------------------------------------
-# CH2O
-m = lm(BMI ~ poly(CH2O, 4), data = trainData)
-trainData |>
-  mutate(fitted = fitted(m)) |>
-  ggplot(aes(x = CH2O)) + geom_point(aes(y = BMI), size = 1) +
-  geom_line(aes(y = fitted),
-            colour = "red", linewidth = 1) +
-  ggtitle("Relationship between CH2O and BMI")
 # -----------------------------------------
 
 # -----------------------------------------

@@ -22,7 +22,7 @@ dataset = read.csv("ObesityDataSet_raw_and_data_sinthetic.csv")
 dataset[sapply(dataset, is.character)] = lapply(dataset[sapply(dataset, is.character)], as.factor)
 
 set.seed(1)
-row.number = sample(1:nrow(dataset), 2/3 * nrow(dataset))
+row.number = sample(1:nrow(dataset), 0.7 * nrow(dataset))
 trainData = dataset[row.number, ]
 testData = dataset[-row.number, ]
 
@@ -158,13 +158,6 @@ r1 = sqrt(mean((BMI - p)^2))
 # -----------------------------------------
 
 # -----------------------------------------
-# CH2O
-m = lm(BMI ~ ns(CH2O, df = 5), data = trainData)
-p = predict(m, newdata = testData)
-r2 = sqrt(mean((BMI - p)^2))
-# -----------------------------------------
-
-# -----------------------------------------
 # TUE
 m = lm(BMI ~ ns(TUE, df = 5), data = trainData)
 p = predict(m, newdata = testData)
@@ -172,7 +165,7 @@ r3 = sqrt(mean((BMI - p)^2))
 # -----------------------------------------
 
 print("These are the error rates for each numerical variable in predicting BMI with Spline Regression:")
-cat("\nNumber of main meals =", r1, "\nConsumption of water =", r2, "\nTime using electronics =", r3)
+cat("\nNumber of main meals =", r1, "\nTime using electronics =", r3)
 
 cat("\n\nAs we can see from the results, spline regression is 
 not a better predictor of the error rate so we will try 
@@ -186,7 +179,7 @@ something else.")
 # -----------------------------------------
 library(glmnet)
 # Create model
-fit = lm(BMI ~ Gender + NCP + SMOKE + CH2O + TUE, data = trainData)
+fit = lm(BMI ~ Gender + NCP + SMOKE + TUE, data = trainData)
 X = model.matrix(fit)
 y = BMI
 
@@ -195,14 +188,14 @@ X = X[, -1]
 fit_lasso = glmnet(X, y)
 
 # Set up x test
-X_test = model.matrix(~Gender + NCP + SMOKE + CH2O + TUE, data = testData)
+X_test = model.matrix(~Gender + NCP + SMOKE + TUE, data = testData)
 X_test = as.matrix(X_test)
 
 # Remove intercept
 X_test = X_test[, -1]
 
 # Set up y test
-y_test = BMI[1:704]
+y_test = BMI[1:634]
 
 # Get predicted vals
 predLasso = predict(fit_lasso, newx = X_test, s = 1.2)
