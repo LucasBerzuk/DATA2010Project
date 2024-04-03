@@ -6,7 +6,7 @@ urlcolor: blue
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE, tidy.opts=list(width.cutoff=90), tidy=TRUE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message=FALSE, tidy.opts=list(width.cutoff=90), tidy=TRUE)
 ```
 \begin{center}
 \Huge \textbf{Data 2010 Project}
@@ -18,13 +18,13 @@ April 5, 2024
 \end{center} 
 
 ## Introduction
-- Talk about the data analysis and probably a few other things, maybe like where we were gojng to go with it but then what changed
+- *Talk about the data analysis and probably a few other things, maybe like where we were gojng to go with it but then what changed*
 
 Obesity is a chronic disease that is defined by having excessive amount of body fat. It increases the risk of other diseases and health problems including heart disease, high blood pressure, diabetes and certain cancers. First world countries are experiencing an epidemic of obesity in recent years. This includes Canada, which reported a 30% obesity rate out of all Canadian adults, an increase from the 21% reported in 2003 [2]. There must be a change and this includes diagnosing obesity early on for people and providing the preventative therapies to decrease body fat percentage. This involves measuring levels of obesity in people. 
 
 There are many different tools for measuring obesity levels, these include the body mass index, waist-to-hip ratio, skin fold thickness, and other more costly and intense body fat measuring procedures. The most common measure is the body mass index, BMI for short, which is calculated by using an individuals weight and height, with the following formula: $BMI = \frac{weight}{height^2}$. However in many cases the height and weight of individuals are not available in the diagnosing of obesity level. 
 
-In this paper we investigate different models that can be to predict obesity levels based on other variables other than height and weight. The models will be based on the follwing variables.
+In this paper we investigate different models that can be to predict obesity levels based on other variables other than height and weight. The models will be based on the following variables.
 
 We build various regression model with the target variable being BMI...
 
@@ -35,9 +35,7 @@ We then build classification models including...
 
 
 ## Methods
-- Not sure what goes here, maybe our methods we used to analyze the data (i.e. the regression and stuff that we plan to do)
-
-## Regression
+### Regression
 ```{r}
 # -------------------------------------
 # Setup Code Chunk
@@ -60,8 +58,99 @@ testData = dataset[-row.number, ]
 # BMI to use
 BMI = trainData$Weight / (trainData$Height ^2)
 ```
+For regression we first started off by performing standard linear regression with BMI where $BMI = \frac{weight}{height^2}$, on every variable that was in the dataset (aside from height and weight because that it what is used in BMI). For the categorical variables we had to factor them before performing regression because otherwise we would not be able to test them. These are the RMSE values that we found for every variable in the dataset.
 
-## Classification 
+1. *Gender* = 7.933141
+2. *Age* = 8.138466
+3. *History of overweight* = 8.732148
+4. *Freq consumption of high caloric food* = 8.245465
+5. *Freq consumption of vegetables* = 8.07324
+6. *Number of main meals* = 7.960129
+7. *Consumption of food between meals* = 8.789884
+8. *Smoke* = 7.956062
+9. *Consumption of water* = 7.990943
+10. *Calorie consumption monitoring* = 8.083427
+11. *Freq of physical activity* = 8.094464
+12. *Time using electronics* = 7.972349
+13. *Consumption of alcohol* = 8.203673
+14. *Transportation used* = 8.012741
+
+Noticing that *Gender*, *Number of main meals*, *Smoke*, *Consumption of water* and *Time using electronics* were the variables that lead to the lowest RMSE values (under 8), we decided to do spline regression on the 3 numerical variables out of these 5 to see if that would improve the model any further. These were the results:
+
+1. *Number of main meals* = 8.324037 
+2. *Consumption of water* = 8.504096 
+3. *Time using electronics* = 8.341119
+
+It turns out that spline regression did not improve the error in our case so we had to try something else.
+
+We moved to attempt Lasso regression to yet again try and improve our models. When performing lasso regression on the 5 original variables that all had RMSE under 8, this is what we got.
+
+**Lasso regression** = 8.052512 
+
+Once again we still were unable to improve the RMSE value. 
+*Maybe try knn here now*
+
+Here are the graphs of the cubic regression models for the 5 original variables that we were trying to improve. 
+```{r, fig.width=10, fig.height=8, out.width='50%', out.height='50%'}
+# -----------------------------------------
+# Lets graph the regression models
+# -----------------------------------------
+
+# -----------------------------------------
+# Gender
+m = lm(BMI ~ poly(Gender, 1), data = trainData)
+trainData |>
+  mutate(fitted = fitted(m)) |>
+  ggplot(aes(x = Gender)) + geom_point(aes(y = BMI), size = 1) +
+  ggtitle("Relationship between Gender and BMI")
+# -----------------------------------------
+
+# -----------------------------------------
+# NCP
+m = lm(BMI ~ poly(NCP, 4), data = trainData)
+trainData |>
+  mutate(fitted = fitted(m)) |>
+  ggplot(aes(x = NCP)) + geom_point(aes(y = BMI), size = 1) +
+  geom_line(aes(y = fitted),
+            colour = "red", linewidth = 1) + 
+  ggtitle("Relationship between NCP and BMI")
+# -----------------------------------------
+
+# -----------------------------------------
+# SMOKE
+m = lm(BMI ~ poly(SMOKE, 1), data = trainData)
+trainData |> 
+  mutate(fitted = fitted(m)) |> 
+  ggplot(aes(x = SMOKE)) + geom_point(aes(y = BMI), size = 1) + 
+  ggtitle("Relationship between SMOKE and BMI")
+# -----------------------------------------
+
+# -----------------------------------------
+# CH2O
+m = lm(BMI ~ poly(CH2O, 4), data = trainData)
+trainData |>
+  mutate(fitted = fitted(m)) |>
+  ggplot(aes(x = CH2O)) + geom_point(aes(y = BMI), size = 1) +
+  geom_line(aes(y = fitted),
+            colour = "red", linewidth = 1) +
+  ggtitle("Relationship between CH2O and BMI")
+# -----------------------------------------
+
+# -----------------------------------------
+# TUE
+m = lm(BMI ~ poly(TUE, 4), data = trainData)
+trainData |>
+  mutate(fitted = fitted(m)) |>
+  ggplot(aes(x = TUE)) + geom_point(aes(y = BMI), size = 1) +
+  geom_line(aes(y = fitted),
+            colour = "red", linewidth = 1) +
+  ggtitle("Relationship between TUE and BMI")
+# -----------------------------------------
+```
+
+Next we wanted to try to see if there was any evidence of multicollinearity. Upon taking a look at the correlation matrix we did not see any values that were even close to being considered multicollinearity.
+
+### Classification 
 
 
 

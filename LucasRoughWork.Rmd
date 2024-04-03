@@ -1,0 +1,283 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message=FALSE, tidy.opts=list(width.cutoff=90), tidy=TRUE)
+```
+
+```{r}
+# -------------------------------------
+# Setup Code Chunk
+# Add any libraries etc used here.
+# -------------------------------------
+library(ggplot2)
+library(tidyverse)
+
+# Data importing
+dataset = read.csv("ObesityDataSet_raw_and_data_sinthetic.csv")
+
+# factor all categorical variables
+dataset[sapply(dataset, is.character)] = lapply(dataset[sapply(dataset, is.character)], as.factor)
+
+set.seed(1)
+row.number = sample(1:nrow(dataset), 2/3 * nrow(dataset))
+trainData = dataset[row.number, ]
+testData = dataset[-row.number, ]
+
+# BMI to use
+BMI = trainData$Weight / (trainData$Height ^2)
+```
+
+```{r}
+# -----------------------------------------
+# Performing regression on every variable
+# with BMI
+# -----------------------------------------
+
+# -----------------------------------------
+# Gender
+m = lm(BMI ~ Gender, data = trainData)
+p = predict(m, newdata = testData)
+r1 = sqrt(mean((BMI - p)^2))
+# -----------------------------------------
+
+# -----------------------------------------
+# Age
+m = lm(BMI ~ Age, data = trainData)
+p = predict(m, newdata = testData)
+r2 = sqrt(mean((BMI - p)^2))
+# -----------------------------------------
+
+# -----------------------------------------
+# family_history_with_overweight
+m = lm(BMI ~ family_history_with_overweight, data = trainData)
+p = predict(m, newdata = testData)
+r3 = sqrt(mean((BMI - p)^2))
+# -----------------------------------------
+
+# -----------------------------------------
+# FAVC - Frequent consumption of high caloric food
+m = lm(BMI ~ FAVC, data = trainData)
+p = predict(m, newdata = testData)
+r4 = sqrt(mean((BMI - p)^2))
+# -----------------------------------------
+
+# -----------------------------------------
+# FCVC - Frequent consumption of vegetables
+m = lm(BMI ~ FCVC, data = trainData)
+p = predict(m, newdata = testData)
+r5 = sqrt(mean((BMI - p)^2))
+# -----------------------------------------
+
+# -----------------------------------------
+# NCP - Number of main meals
+m = lm(BMI ~ NCP, data = trainData)
+p = predict(m, newdata = testData)
+r6 = sqrt(mean((BMI - p)^2))
+# -----------------------------------------
+
+# -----------------------------------------
+# CAEC - Consumption of food between meals
+m = lm(BMI ~ CAEC, data = trainData)
+p = predict(m, newdata = testData)
+r7 = sqrt(mean((BMI - p)^2))
+# -----------------------------------------
+
+# -----------------------------------------
+# SMOKE 
+m = lm(BMI ~ SMOKE, data = trainData)
+p = predict(m, newdata = testData)
+r8 = sqrt(mean((BMI - p)^2))
+# -----------------------------------------
+
+# -----------------------------------------
+# CH2O - Consumption of water
+m = lm(BMI ~ CH2O, data = trainData)
+p = predict(m, newdata = testData)
+r9 = sqrt(mean((BMI - p)^2))
+# -----------------------------------------
+
+# -----------------------------------------
+# SCC - Calories consumption monitoring
+m = lm(BMI ~ SCC, data = trainData)
+p = predict(m, newdata = testData)
+r10 = sqrt(mean((BMI - p)^2))
+# -----------------------------------------
+
+# -----------------------------------------
+# FAF - Frequency of physical activity
+m = lm(BMI ~ FAF, data = trainData)
+p = predict(m, newdata = testData)
+r11 = sqrt(mean((BMI - p)^2))
+# -----------------------------------------
+
+# -----------------------------------------
+# TUE - Time using electronics
+m = lm(BMI ~ TUE, data = trainData)
+p = predict(m, newdata = testData)
+r12 = sqrt(mean((BMI - p)^2))
+# -----------------------------------------
+
+# -----------------------------------------
+# CALC - Consumption of alcohol
+m = lm(BMI ~ CALC, data = trainData)
+p = predict(m, newdata = testData)
+r13 = sqrt(mean((BMI - p)^2))
+# -----------------------------------------
+
+# -----------------------------------------
+# MTRANS - Transportation used
+m = lm(BMI ~ MTRANS, data = trainData)
+p = predict(m, newdata = testData)
+r14 = sqrt(mean((BMI - p)^2))
+# -----------------------------------------
+
+print("These are the error rates for each variable in predicting BMI with Linear Regression:")
+cat("\nGender =", r1, "\nAge =", r2, "\nHistory of overweight =", r3, "\nFreq consumption of high caloric food =", r4, "\nFreq consumption of vegetables =", r5, "\nNumber of main meals =", r6, "\nConsumption of food between meals =", r7, "\nSmoke =", r8, "\nConsumption of water =", r9, "\nCalorie consumption monitoring =", r10, "\nFreq of physical activity =", r11, "\nTime using electronics =", r12, "\nConsumption of alcohol =", r13, "\nTransportation used =", r14)
+
+cat("\n\nAs we can see, the most accurate are gender, 
+number of main meals, smoke, consumption of water, 
+and time using electronics. Lets see if we can get 
+these to be more precise with different regression approaches.")
+```
+
+```{r}
+# -----------------------------------------
+# Spline regression on the numerical 
+# variables to see if its a better approach
+# -----------------------------------------
+library(splines)
+
+# -----------------------------------------
+# NCP
+m = lm(BMI ~ ns(NCP, df = 5), data = trainData)
+p = predict(m, newdata = testData)
+r1 = sqrt(mean((BMI - p)^2))
+# -----------------------------------------
+
+# -----------------------------------------
+# CH2O
+m = lm(BMI ~ ns(CH2O, df = 5), data = trainData)
+p = predict(m, newdata = testData)
+r2 = sqrt(mean((BMI - p)^2))
+# -----------------------------------------
+
+# -----------------------------------------
+# TUE
+m = lm(BMI ~ ns(TUE, df = 5), data = trainData)
+p = predict(m, newdata = testData)
+r3 = sqrt(mean((BMI - p)^2))
+# -----------------------------------------
+
+print("These are the error rates for each numerical variable in predicting BMI with Spline Regression:")
+cat("\nNumber of main meals =", r1, "\nConsumption of water =", r2, "\nTime using electronics =", r3)
+
+cat("\n\nAs we can see from the results, spline regression is 
+not a better predictor of the error rate so we will try 
+something else.")
+```
+
+```{r}
+# -----------------------------------------
+# Lasso regression with all the lower
+# error variables
+# -----------------------------------------
+library(glmnet)
+# Create model
+fit = lm(BMI ~ Gender + NCP + SMOKE + CH2O + TUE, data = trainData)
+X = model.matrix(fit)
+y = BMI
+
+# Remove intercept
+X = X[, -1]
+fit_lasso = glmnet(X, y)
+
+# Set up x test
+X_test = model.matrix(~Gender + NCP + SMOKE + CH2O + TUE, data = testData)
+X_test = as.matrix(X_test)
+
+# Remove intercept
+X_test = X_test[, -1]
+
+# Set up y test
+y_test = BMI[1:704]
+
+# Get predicted vals
+predLasso = predict(fit_lasso, newx = X_test, s = 1.2)
+# Calc rmse
+rLass = sqrt(mean((y_test - predLasso)^2))
+print("The error when using lasso regression is: ")
+cat(rLass, "\nWhich is still not as low as linear regressin got us")
+```
+
+```{r, fig.width=10, fig.height=8, out.width='50%', out.height='50%'}
+# -----------------------------------------
+# Lets graph the regression models
+# -----------------------------------------
+
+# -----------------------------------------
+# Gender
+m = lm(BMI ~ poly(Gender, 1), data = trainData)
+trainData |>
+  mutate(fitted = fitted(m)) |>
+  ggplot(aes(x = Gender)) + geom_point(aes(y = BMI), size = 1) +
+  ggtitle("Relationship between Gender and BMI")
+# -----------------------------------------
+
+# -----------------------------------------
+# NCP
+m = lm(BMI ~ poly(NCP, 4), data = trainData)
+trainData |>
+  mutate(fitted = fitted(m)) |>
+  ggplot(aes(x = NCP)) + geom_point(aes(y = BMI), size = 1) +
+  geom_line(aes(y = fitted),
+            colour = "red", linewidth = 1) + 
+  ggtitle("Relationship between NCP and BMI")
+# -----------------------------------------
+
+# -----------------------------------------
+# SMOKE
+m = lm(BMI ~ poly(SMOKE, 1), data = trainData)
+trainData |> 
+  mutate(fitted = fitted(m)) |> 
+  ggplot(aes(x = SMOKE)) + geom_point(aes(y = BMI), size = 1) + 
+  ggtitle("Relationship between SMOKE and BMI")
+# -----------------------------------------
+
+# -----------------------------------------
+# CH2O
+m = lm(BMI ~ poly(CH2O, 4), data = trainData)
+trainData |>
+  mutate(fitted = fitted(m)) |>
+  ggplot(aes(x = CH2O)) + geom_point(aes(y = BMI), size = 1) +
+  geom_line(aes(y = fitted),
+            colour = "red", linewidth = 1) +
+  ggtitle("Relationship between CH2O and BMI")
+# -----------------------------------------
+
+# -----------------------------------------
+# TUE
+m = lm(BMI ~ poly(TUE, 4), data = trainData)
+trainData |>
+  mutate(fitted = fitted(m)) |>
+  ggplot(aes(x = TUE)) + geom_point(aes(y = BMI), size = 1) +
+  geom_line(aes(y = fitted),
+            colour = "red", linewidth = 1) +
+  ggtitle("Relationship between TUE and BMI")
+# -----------------------------------------
+```
+
+
+```{r}
+# ------------------------------------------------
+# Checking for multicollinearity
+print("Testing for multicollinearity")
+double_vars = sapply(trainData, function(x) is.numeric(x) && !all(x %% 1 == 0))
+double_data = trainData[, double_vars]
+corMatrix = cor(double_data)
+abs(corMatrix)
+print("There is no evidence of multicollinearity")
+# ------------------------------------------------
+```
