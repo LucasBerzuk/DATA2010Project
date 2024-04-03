@@ -50,7 +50,7 @@ library(tidyverse)
 dataset = read.csv("ObesityDataSet_raw_and_data_sinthetic.csv")
 
 # factor all categorical variables
-data[sapply(data, is.character)] = lapply(data[sapply(data, is.character)], as.factor)
+dataset[sapply(dataset, is.character)] = lapply(dataset[sapply(dataset, is.character)], as.factor)
 
 set.seed(1)
 row.number = sample(1:nrow(dataset), 2/3 * nrow(dataset))
