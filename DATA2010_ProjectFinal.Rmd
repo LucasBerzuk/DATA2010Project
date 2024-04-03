@@ -82,13 +82,19 @@ Noticing that *Gender*, *Number of main meals*, *Smoke* and *Time using electron
 
 It turns out that spline regression did not improve the error in our case so we had to try something else.
 
-We moved to attempt Lasso regression to yet again try and improve our models. When performing lasso regression on the 4 original variables that all had RMSE under 8, this is what we got.
+We moved to attempt Lasso regression to yet again try and improve our models. When performing lasso regression on the 4 original variables that all had RMSE under 8, this is what we got with a lambda of 2.
 
-**Lasso regression** = 7.968656  
+**Lasso regression** = 7.968656
 
-This is a good RMSE value but it is not lower than any 1 of the 4 original RMSE values gained from using linear regression.
+This is a good RMSE value but it is not lower than any 1 of the 4 original RMSE values gained from using linear regression. Because we still can not seem to get it lower that the original 4, we decided to do lasso regression with all of the variables and this was the result with a lambda of 4:
 
-*Maybe try knn here now*
+**Lasso regression** = 7.968656
+
+Which infact, is worse than before but this is something we kind of expected because more variables just means more noise. Maybe we could try and use less variables? This is with just the Gender and SMOKE variable at the lambda of 0.27.
+
+**Lasso regression** = 7.96817
+
+The result is just slightly lower than the previous 2 lasso regression attempts so it seems like we may be at a deal end here. 
 
 Here are the graphs of the cubic regression models for the 4 original variables that we were trying to improve. 
 ```{r, fig.width=10, fig.height=8, out.width='50%', out.height='50%'}

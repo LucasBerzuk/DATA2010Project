@@ -205,6 +205,70 @@ print("The error when using lasso regression is: ")
 cat(rLass, "\nWhich is still not as low as linear regressin got us")
 ```
 
+```{r}
+# -----------------------------------------
+# Lasso regression all variables (no weight and height)
+# -----------------------------------------
+library(glmnet)
+# Create model
+fit = lm(BMI ~ Gender + Age + family_history_with_overweight + FAVC + FCVC + NCP + CAEC + SMOKE + CH2O + SCC + FAF + TUE + CALC + MTRANS, data = trainData)
+X = model.matrix(fit)
+y = BMI
+
+# Remove intercept
+X = X[, -1]
+fit_lasso = glmnet(X, y)
+
+# Set up x test
+X_test = model.matrix(~Gender + Age + family_history_with_overweight + FAVC + FCVC + NCP + CAEC + SMOKE + CH2O + SCC + FAF + TUE + CALC + MTRANS, data = testData)
+X_test = as.matrix(X_test)
+
+# Remove intercept
+X_test = X_test[, -1]
+
+# Set up y test
+y_test = BMI[1:634]
+
+# Get predicted vals
+predLasso = predict(fit_lasso, newx = X_test, s = 4)
+# Calc rmse
+rLass = sqrt(mean((y_test - predLasso)^2))
+print("The error when using lasso regression is: ")
+cat(rLass, "\nWhich is still not as low as linear regressin got us")
+```
+
+```{r}
+# -----------------------------------------
+# Lasso regression all variables (no weight and height)
+# -----------------------------------------
+library(glmnet)
+# Create model
+fit = lm(BMI ~ Gender + SMOKE, data = trainData)
+X = model.matrix(fit)
+y = BMI
+
+# Remove intercept
+X = X[, -1]
+fit_lasso = glmnet(X, y)
+
+# Set up x test
+X_test = model.matrix(~Gender + SMOKE, data = testData)
+X_test = as.matrix(X_test)
+
+# Remove intercept
+X_test = X_test[, -1]
+
+# Set up y test
+y_test = BMI[1:634]
+
+# Get predicted vals
+predLasso = predict(fit_lasso, newx = X_test, s = 0.27)
+# Calc rmse
+rLass = sqrt(mean((y_test - predLasso)^2))
+print("The error when using lasso regression is: ")
+cat(rLass, "\nWhich is still not as low as linear regressin got us")
+```
+
 ```{r, fig.width=10, fig.height=8, out.width='50%', out.height='50%'}
 # -----------------------------------------
 # Lets graph the regression models
