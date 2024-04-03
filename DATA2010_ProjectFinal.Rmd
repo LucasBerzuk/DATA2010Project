@@ -53,7 +53,7 @@ dataset = read.csv("ObesityDataSet_raw_and_data_sinthetic.csv")
 dataset[sapply(dataset, is.character)] = lapply(dataset[sapply(dataset, is.character)], as.factor)
 
 set.seed(1)
-row.number = sample(1:nrow(dataset), 2/3 * nrow(dataset))
+row.number = sample(1:nrow(dataset), 0.7 * nrow(dataset))
 trainData = dataset[row.number, ]
 testData = dataset[-row.number, ]
 
