@@ -48,6 +48,8 @@ library(tidyverse)
 
 # Data importing
 dataset = read.csv("ObesityDataSet_raw_and_data_sinthetic.csv")
+
+# factor all categorical variables
 data[sapply(data, is.character)] = lapply(data[sapply(data, is.character)], as.factor)
 
 set.seed(1)
