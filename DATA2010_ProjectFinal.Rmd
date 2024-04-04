@@ -165,7 +165,7 @@ rmse14 = sqrt(mean((BMI - p)^2))
 cat("Gender =", rmse1, "\nAge =", rmse2, "\nHistory of overweight =", rmse3, "\nFreq consumption of high caloric food =", rmse4, "\nFreq consumption of vegetables =", rmse5, "\nNumber of main meals =", rmse6, "\nConsumption of food between meals =", rmse7, "\nSmoke =", rmse8, "\nConsumption of water =", rmse9, "\nCalorie consumption monitoring =", rmse10, "\nFreq of physical activity =", rmse11, "\nTime using electronics =", rmse12, "\nConsumption of alcohol =", rmse13, "\nTransportation used =", rmse14)
 ```
 
-Noticing that *Gender*, *Number of main meals*, *Smoke* and *Time using electronics* were the variables that lead to the lowest RMSE values (under 8), we decided to graph these variables with cubic regression for visual input. Here are those graphs.
+Noticing that *Gender*, *Number of main meals*, *Smoke* and *Time using electronics* were the variables that lead to the lowest RMSE values (under 8), we decided to graph these variables with for visual input. Here are those graphs.
 
 ```{r, fig.width=10, fig.height=8, out.width='50%', out.height='50%'}
 # Lets graph the regression models
