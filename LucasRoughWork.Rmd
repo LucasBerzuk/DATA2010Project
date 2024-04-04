@@ -269,6 +269,84 @@ print("The error when using lasso regression is: ")
 cat(rLass, "\nWhich is still not as low as linear regressin got us")
 ```
 
+```{r}
+# ----------------------------
+# Ridge with the 4
+# ----------------------------
+
+# Use function lm
+fit <- lm(BMI ~ Gender + NCP + SMOKE + TUE, data = trainData)
+coef(fit)
+X <- model.matrix(fit)
+y <- BMI
+beta_ols <- solve(crossprod(X)) %*% crossprod(X, y)
+# compare beta values from model and matrix calculations.
+all.equal(coef(fit), beta_ols[,1])
+lambda <- .1
+p <- ncol(X)
+beta_ridge <- solve(crossprod(X) + diag(lambda, ncol = p, nrow = p)) %*%
+crossprod(X, y)
+beta_ridge[,1]
+X_test <- model.matrix(~ Gender + NCP + SMOKE + TUE, data = testData)
+X_test <- as.matrix(X_test)
+y_test <- BMI[1:634]
+y_pred <- X_test %*% beta_ridge
+rmse <- sqrt(mean((y_test - y_pred)^2))
+rmse
+```
+
+```{r}
+# ----------------------------
+# Ridge with all
+# ----------------------------
+
+# Use function lm
+fit <- lm(BMI ~ Gender + Age + family_history_with_overweight + FAVC + FCVC + NCP + CAEC + SMOKE + CH2O + SCC + FAF + TUE + CALC + MTRANS, data = trainData)
+coef(fit)
+X <- model.matrix(fit)
+y <- BMI
+beta_ols <- solve(crossprod(X)) %*% crossprod(X, y)
+# compare beta values from model and matrix calculations.
+all.equal(coef(fit), beta_ols[,1])
+lambda <- 750
+p <- ncol(X)
+beta_ridge <- solve(crossprod(X) + diag(lambda, ncol = p, nrow = p)) %*%
+crossprod(X, y)
+beta_ridge[,1]
+X_test <- model.matrix(~ Gender + Age + family_history_with_overweight + FAVC + FCVC + NCP + CAEC + SMOKE + CH2O + SCC + FAF + TUE + CALC + MTRANS, data = testData)
+X_test <- as.matrix(X_test)
+y_test <- BMI[1:634]
+y_pred <- X_test %*% beta_ridge
+rmse <- sqrt(mean((y_test - y_pred)^2))
+rmse
+```
+
+```{r}
+# ----------------------------
+# Ridge with the 4
+# ----------------------------
+
+# Use function lm
+fit <- lm(BMI ~ NCP + TUE, data = trainData)
+coef(fit)
+X <- model.matrix(fit)
+y <- BMI
+beta_ols <- solve(crossprod(X)) %*% crossprod(X, y)
+# compare beta values from model and matrix calculations.
+all.equal(coef(fit), beta_ols[,1])
+lambda <- 1
+p <- ncol(X)
+beta_ridge <- solve(crossprod(X) + diag(lambda, ncol = p, nrow = p)) %*%
+crossprod(X, y)
+beta_ridge[,1]
+X_test <- model.matrix(~ NCP + TUE, data = testData)
+X_test <- as.matrix(X_test)
+y_test <- BMI[1:634]
+y_pred <- X_test %*% beta_ridge
+rmse <- sqrt(mean((y_test - y_pred)^2))
+rmse
+```
+
 ```{r, fig.width=10, fig.height=8, out.width='50%', out.height='50%'}
 # -----------------------------------------
 # Lets graph the regression models
@@ -331,7 +409,7 @@ trainData |>
 # ------------------------------------------------
 # Checking for multicollinearity
 print("Testing for multicollinearity")
-double_vars = sapply(trainData, function(x) is.numeric(x) && !all(x %% 1 == 0))
+double_vars = sapply(dataset, function(x) is.numeric(x) && !all(x %% 1 == 0))
 double_data = trainData[, double_vars]
 corMatrix = cor(double_data)
 abs(corMatrix)
