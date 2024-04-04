@@ -28,7 +28,7 @@ In this paper we investigate different models that can be to predict obesity lev
 
 We build various regression models with the target variable being BMI and using the rest of the variables in the dataset to see if we are able to predict obesity with the lifestyle of a person. We end up using Linear, Lasso, and Ridge regression to build our models and calculate the root mean squared error (RMSE).
 
-//TODO
+//**TODO**
 We then build classification models including... 
 
 ### Data Analysis
