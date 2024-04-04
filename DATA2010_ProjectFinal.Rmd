@@ -295,13 +295,15 @@ cat("RMSE =", rmseLasso)
 The result is just slightly lower than the previous 2 Lasso regression attempts so it seems like we may be at a dead end here. But we tried one more just to see what happened. Ridge regression gave us similar RMSE values to Lasso but just slightly higher no matter what variables we used in the model. 
 
 The range of BMIs that we acquired from the dataset are from:
+
 ```{r}
 cat("Minimum =", min(BMI))
 cat("Maximum =", max(BMI))
 ```
+
 So the RMSE floating around 8 is not the end of the world but we definitely wish that we could improve it more. 
 
-Next we wanted to try to see if there was any evidence of multicollinearity. So we created a correlation matrix and scanned the values to see if there was anything close enough to 1 or -1 to be considered evidence of multicollinearity, but there was nothing close enough to prove this so we state that there is no multicollinearity in this dataset.
+Next we wanted to try to see if there was any evidence of multicollinearity. So we created a correlation matrix and scanned the values to see if there was anything close enough to 1 or -1 to be considered evidence of multicollinearity.
 
 ```{r}
 # Checking for multicollinearity
@@ -310,6 +312,8 @@ double_data = trainData[, double_vars]
 corMatrix = cor(double_data)
 abs(corMatrix)
 ```
+
+As we can see, there is nothing close enough to prove this so we state that there is no multicollinearity in this dataset.
 
 ### Classification 
 
