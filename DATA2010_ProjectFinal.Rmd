@@ -58,7 +58,7 @@ testData = dataset[-row.number, ]
 # BMI to use
 BMI = trainData$Weight / (trainData$Height ^2)
 ```
-For regression we first started off by performing standard linear regression with BMI where $BMI = \frac{weight}{height^2}$, on every variable that was in the dataset (aside from height and weight because that is what is used in BMI). For the categorical variables we had to factor them before performing regression because otherwise we would not be able to test them. These are the RMSE values that we found for every variable in the dataset.
+We decide to model many forms of regression on our data to calculate RMSE and see how far off predicted values would be from observed values for this obesity dataset. We first started off by performing standard linear regression with BMI where $BMI = \frac{weight}{height^2}$, on every variable that was in the dataset (aside from height and weight because that is what is used in BMI). For the categorical variables we had to factor them before performing regression because otherwise we would not be able to test them. These are the RMSE values that we found for every variable in the dataset.
 
 1. *Gender* = 7.939414 
 2. *Age* = 8.178174 
@@ -82,17 +82,17 @@ Noticing that *Gender*, *Number of main meals*, *Smoke* and *Time using electron
 
 It turns out that spline regression did not improve the error in our case so we had to try something else.
 
-We moved to attempt Lasso regression to yet again try and improve our models. When performing lasso regression on the 4 original variables that all had RMSE under 8, this is what we got with a lambda of 2.
+We moved to attempt Lasso regression to yet again try and improve our models. When performing lasso regression on the 4 original variables that all had RMSE under 8, this is what we got with a lambda of 1.2.
 
-**Lasso regression** = 7.968656
+**RMSE** = 7.968656
 
 This is a good RMSE value but it is not lower than any 1 of the 4 original RMSE values gained from using linear regression. Because we still can not seem to get it lower that the original 4, we decided to do lasso regression with all of the variables and this was the result with a lambda of 4:
 
-**Lasso regression** = 7.968656
+**RMSE** = 7.968656
 
-Which infact, is worse than before but this is something we kind of expected because more variables just means more noise. Maybe we could try and use less variables? This is with just the Gender and SMOKE variable at the lambda of 0.27.
+This turned out to give us the exact same RMSE. Maybe we could try and use less variables? This is with just the Gender and SMOKE variable at the lambda of 0.27.
 
-**Lasso regression** = 7.96817
+**RMSE** = 7.96817
 
 The result is just slightly lower than the previous 2 lasso regression attempts so it seems like we may be at a dead end here. 
 
