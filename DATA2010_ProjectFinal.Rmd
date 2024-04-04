@@ -171,11 +171,11 @@ Noticing that *Gender*, *Number of main meals*, *Smoke* and *Time using electron
 # Lets graph the regression models
 
 # Gender
-m = lm(BMI ~ poly(Gender, 1), data = trainData)
-trainData |>
-  mutate(fitted = fitted(m)) |>
-  ggplot(aes(x = Gender)) + geom_point(aes(y = BMI), size = 1) +
-  ggtitle("Relationship between Gender and BMI")
+# m = lm(BMI ~ poly(Gender, 1), data = trainData)
+# trainData |>
+#   mutate(fitted = fitted(m)) |>
+#   ggplot(aes(x = Gender)) + geom_point(aes(y = BMI), size = 1) +
+#   ggtitle("Relationship between Gender and BMI")
 
 # NCP
 m = lm(BMI ~ poly(NCP, 4), data = trainData)
@@ -187,11 +187,11 @@ trainData |>
   ggtitle("Relationship between NCP and BMI")
 
 # SMOKE
-m = lm(BMI ~ poly(SMOKE, 1), data = trainData)
-trainData |> 
-  mutate(fitted = fitted(m)) |> 
-  ggplot(aes(x = SMOKE)) + geom_point(aes(y = BMI), size = 1) + 
-  ggtitle("Relationship between SMOKE and BMI")
+# m = lm(BMI ~ poly(SMOKE, 1), data = trainData)
+# trainData |> 
+#   mutate(fitted = fitted(m)) |> 
+#   ggplot(aes(x = SMOKE)) + geom_point(aes(y = BMI), size = 1) + 
+#   ggtitle("Relationship between SMOKE and BMI")
 
 # TUE
 m = lm(BMI ~ poly(TUE, 4), data = trainData)
