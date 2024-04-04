@@ -5,7 +5,7 @@ urlcolor: blue
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message=FALSE, eval=FALSE, tidy.opts=list(width.cutoff=90), tidy=TRUE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message=FALSE, tidy.opts=list(width.cutoff=90), tidy=TRUE)
 ```
 \begin{center}
 \Huge \textbf{Data 2010 Project}
@@ -33,11 +33,33 @@ We then build classification models including...
 
 ### Data Analysis
 
-This data comes from a study performed in Mexico, Peru and Colombia. It has 17 attributes and 2111 data points. The 17 attributes comprise 4 different variable types: 6 continuous, 2 ordinal, 5 categorical, and 4 binary. This data consists of an individual's behavioural patterns such as eating habits and physical condition, as well as their level of obesity. It is important to note that up to 77% of this data has been synthetically generated because of a greatly unbalanced number of samples between the different obesity categories in the sample data. The balancing was performed using the SMOTE filter with the Weka tool. The purpose was to create data points within the obesity categories with lower counts. This lead to an overall data set with uniform counts for the different obesity levels. The data was collected through a voluntary online survey that had 16 questions with a variety of responses. It was accessible for 30 days for users to complete. The researchers of this study calculated Body Mass Index using the equation $BMI = \frac{weight}{height^2}$ to determine the BMI of every respondent. The BMI values were then placed into different obesity level categories based on the World Health Organization and Mexican Normativity.
+This data comes from a study performed in Mexico, Peru and Colombia. It has 17 attributes and 2111 data points. The 17 attributes comprise 4 different variable types: 6 continuous, 2 ordinal, 5 categorical, and 4 binary. This data consists of an individual's behavioural patterns such as eating habits and physical condition, as well as their level of obesity. It is important to note that up to 77% of this data has been synthetically generated because of a greatly unbalanced number of samples between the different obesity categories in the sample data. The balancing was performed using the SMOTE filter with the Weka tool. The purpose was to create data points within the obesity categories with lower counts. This lead to an overall data set with uniform counts for the different obesity levels. The data was collected through a voluntary online survey that had 16 questions with a variety of responses. It was accessible for 30 days for users to complete. The researchers of this study calculated Body Mass Index using the equation $BMI = \frac{weight}{height^2}$ to determine the BMI of every respondent. The BMI values were then placed into different obesity level categories based on the World Health Organization and Mexican Normativity. The categories can be observed in Table 1.
+
+```{r}
+library(kableExtra)
+# df = data.frame("Obesity Level" = c("Insufficient Weight", "Normal Weight",
+#                                              "Overweight Level I", "Overweight Level II",
+#                                              "Obesity Type I", "Obesity Type II",
+#                                                     "Obesity Type III"),
+#                 "BMI" = c("<18.5", "18.5-22.9", "23.0-25.9", "26.0-29.9", "30.0-34.9", "35.0-39.9", ">40"))
+# 
+# kable(df, caption = "\\label{tab1}Categorizing Obesity Levels") %>% 
+#   column_spec(2:2,border_left = T) 
+
+mat = matrix(c(
+                "BMI", "<18.5", "18.5-22.9", "23.0-25.9", "26.0-29.9", "30.0-34.9", "35.0-39.9", ">40"), nrow = 1, ncol = 8, byrow = TRUE)
+
+colnames(mat) = c("Obesity Level", "Insufficient Weight", "Normal Weight",
+                                             "Overweight Level I", "Overweight Level II",
+                                             "Obesity Type I", "Obesity Type II",
+                                                    "Obesity Type III")
+kable(mat, align = "c", caption = "\\label{tab1}Categorizing Obesity Levels")
+
+```
 
 
 //TODO
-- Talk about our preprocessing stuff
+- Talk about our preprocessing stuff (do we need this????)
 
 
 ## Methods
@@ -139,23 +161,8 @@ m = lm(BMI ~ MTRANS, data = trainData)
 p = predict(m, newdata = testData)
 rmse14 = sqrt(mean((BMI - p)^2))
 
-cat("\nGender =", rmse1, "\nAge =", rmse2, "\nHistory of overweight =", rmse3, "\nFreq consumption of high caloric food =", rmse4, "\nFreq consumption of vegetables =", rmse5, "\nNumber of main meals =", rmse6, "\nConsumption of food between meals =", rmse7, "\nSmoke =", rmse8, "\nConsumption of water =", rmse9, "\nCalorie consumption monitoring =", rmse10, "\nFreq of physical activity =", rmse11, "\nTime using electronics =", rmse12, "\nConsumption of alcohol =", rmse13, "\nTransportation used =", rmse14)
+cat("Gender =", rmse1, "\nAge =", rmse2, "\nHistory of overweight =", rmse3, "\nFreq consumption of high caloric food =", rmse4, "\nFreq consumption of vegetables =", rmse5, "\nNumber of main meals =", rmse6, "\nConsumption of food between meals =", rmse7, "\nSmoke =", rmse8, "\nConsumption of water =", rmse9, "\nCalorie consumption monitoring =", rmse10, "\nFreq of physical activity =", rmse11, "\nTime using electronics =", rmse12, "\nConsumption of alcohol =", rmse13, "\nTransportation used =", rmse14)
 ```
-
-1. *Gender* = 7.939414 
-2. *Age* = 8.178174 
-3. *History of overweight* = 9.08678 
-4. *Freq consumption of high caloric food* = 8.134233 
-5. *Freq consumption of vegetables* = 8.167971 
-6. *Number of main meals* = 7.932018 
-7. *Consumption of food between meals* = 8.807099 
-8. *Smoke* = 7.929959 
-9. *Consumption of water* = 8.065398 
-10. *Calorie consumption monitoring* = 8.106003 
-11. *Freq of physical activity* = 8.109581 
-12. *Time using electronics* = 7.973657 
-13. *Consumption of alcohol* = 8.130043 
-14. *Transportation used* = 8.07459
 
 Noticing that *Gender*, *Number of main meals*, *Smoke* and *Time using electronics* were the variables that lead to the lowest RMSE values (under 8), we decided to graph these variables with cubic regression for visual input. Here are those graphs.
 
@@ -210,11 +217,8 @@ m = lm(BMI ~ ns(TUE, df = 5), data = trainData)
 p = predict(m, newdata = testData)
 rmse2 = sqrt(mean((BMI - p)^2))
 
-cat("\nNumber of main meals =", rmse1, "\nTime using electronics =", rmse2)
+cat("Number of main meals =", rmse1, "\nTime using electronics =", rmse2)
 ```
-
-1. *Number of main meals* = 8.540398
-2. *Time using electronics* = 8.488051
 
 It turns out that spline regression did not improve the error in our case so we had to try something else.
 
@@ -238,10 +242,8 @@ X_test = X_test[, -1]
 y_test = BMI[1:634]
 predLasso = predict(fit_lasso, newx = X_test, s = 1.2)
 rmseLasso = sqrt(mean((y_test - predLasso)^2))
-rmseLasso
+cat("RMSE =", rmseLasso)
 ```
-
-**RMSE** = 7.968656
 
 This is a good RMSE value but it is not lower than any 1 of the 4 original RMSE values gained from using Linear regression. Because we still can not seem to get it lower that the original 4, we decided to do Lasso regression with all of the variables and this was the result with a lambda of 4:
 
@@ -263,10 +265,8 @@ X_test = X_test[, -1]
 y_test = BMI[1:634]
 predLasso = predict(fit_lasso, newx = X_test, s = 4)
 rmseLasso = sqrt(mean((y_test - predLasso)^2))
-rmseLasso
+cat("RMSE =", rmseLasso)
 ```
-
-**RMSE** = 7.968656
 
 This turned out to give us the exact same RMSE. Maybe we could try and use less variables? This is with just the Gender and SMOKE variable at the lambda of 0.27.
 
@@ -288,18 +288,17 @@ X_test = X_test[, -1]
 y_test = BMI[1:634]
 predLasso = predict(fit_lasso, newx = X_test, s = 0.27)
 rmseLasso = sqrt(mean((y_test - predLasso)^2))
-rmseLasso
+cat("RMSE =", rmseLasso)
 ```
 
-**RMSE** = 7.96817
-
-The result is just slightly lower than the previous 2 Lasso regression attempts so it seems like we may be at a dead end here. But we tried one more just to see what happened. Ridge regression gave us similar RMSE values to Lasso but just slightly higher no matter what variables we used in the model. The range of BMIs that we acquired from the dataset are from [12.99 to 50.01].
-So the RMSE floating around 8 is not the end of the world but we definitely wish that we could improve it more. 
+The result is just slightly lower than the previous 2 Lasso regression attempts so it seems like we may be at a dead end here. But we tried one more just to see what happened. Ridge regression gave us similar RMSE values to Lasso but just slightly higher no matter what variables we used in the model. The range of BMIs that we acquired from the dataset are from:
 
 ```{r}
-min(BMI)
-max(BMI)
+cat("Minimum =", min(BMI))
+cat("Maximum =", max(BMI))
 ```
+
+So the RMSE floating around 8 is not the end of the world but we definitely wish that we could improve it more. 
 
 Next we wanted to try to see if there was any evidence of multicollinearity. So we created a correlation matrix and scanned the values to see if there was anything close enough to 1 or -1 to be considered evidence of multicollinearity, but there was nothing close enough to prove this so we state that there is no multicollinearity in this dataset.
 
