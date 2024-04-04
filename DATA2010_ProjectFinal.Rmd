@@ -94,7 +94,7 @@ Which infact, is worse than before but this is something we kind of expected bec
 
 **Lasso regression** = 7.96817
 
-The result is just slightly lower than the previous 2 lasso regression attempts so it seems like we may be at a deal end here. 
+The result is just slightly lower than the previous 2 lasso regression attempts so it seems like we may be at a dead end here. 
 
 Here are the graphs of the cubic regression models for the 4 original variables that we were trying to improve. 
 ```{r, fig.width=10, fig.height=8, out.width='50%', out.height='50%'}
