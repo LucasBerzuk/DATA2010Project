@@ -171,11 +171,11 @@ Noticing that *Gender*, *Number of main meals*, *Smoke* and *Time using electron
 # Lets graph the regression models
 
 # Gender
-# m = lm(BMI ~ poly(Gender, 1), data = trainData)
-# trainData |>
-#   mutate(fitted = fitted(m)) |>
-#   ggplot(aes(x = Gender)) + geom_point(aes(y = BMI), size = 1) +
-#   ggtitle("Relationship between Gender and BMI")
+m = lm(BMI ~ Gender, data = trainData)
+trainData |>
+  mutate(fitted = fitted(m)) |>
+  ggplot(aes(x = Gender)) + geom_point(aes(y = BMI), size = 1) +
+  ggtitle("Relationship between Gender and BMI")
 
 # NCP
 m = lm(BMI ~ poly(NCP, 4), data = trainData)
@@ -187,11 +187,11 @@ trainData |>
   ggtitle("Relationship between NCP and BMI")
 
 # SMOKE
-# m = lm(BMI ~ poly(SMOKE, 1), data = trainData)
-# trainData |> 
-#   mutate(fitted = fitted(m)) |> 
-#   ggplot(aes(x = SMOKE)) + geom_point(aes(y = BMI), size = 1) + 
-#   ggtitle("Relationship between SMOKE and BMI")
+m = lm(BMI ~ SMOKE, data = trainData)
+trainData |>
+  mutate(fitted = fitted(m)) |>
+  ggplot(aes(x = SMOKE)) + geom_point(aes(y = BMI), size = 1) +
+  ggtitle("Relationship between SMOKE and BMI")
 
 # TUE
 m = lm(BMI ~ poly(TUE, 4), data = trainData)
@@ -315,9 +315,6 @@ abs(corMatrix)
 
 As we can see, there is nothing close enough to prove this so we state that there is no multicollinearity in this dataset.
 
-### Classification 
-
-
 
 ## Results
 // **TODO**
@@ -328,6 +325,333 @@ After performing all of our regression testing, we saw that the lowest RMSE valu
 Linear regression put our RMSE values in the range of *7.929959* to *9.08678*. Spline regression was worse and it left us with two values, those being: *8.540398* and *8.488051*. Lasso regression seemed to be the most consistent in getting us RMSE values under 8, no matter what variables were used to build the model. We resulted with RMSE of *7.968656* and *7.96817* accross 3 Lasso regression tests. And finally with the ridge regression (whose results are not included in this paper for brevity) left us with RMSE values of *8.034446* and *8.793966*. 
 
 This could be due to various reasons, one that came to mind is because of the synthetically generated data in this dataset. That generated data could have lead to inaccurate inputs which would hold us back from being able to accurately predict BMI of a person. Although the data generated was useful for filling in noticeable gaps, it has most likely lead to some sort of skew and/or bias in the dataset which prevents us from being able to get a more accurate prediction.
+
+
+
+
+# Classification
+
+In addition to predicting BMI levels, determining whether or not an individual is obese would be a powerful tool in health care to diagnose indiviuals early and prevent further disease. We now focus on developing classification models to determine whether or not an individual is obese based on various variables of our dataset.
+
+## Pre-processing 
+The BMI values have been calculated for each individual and we will use those values to determine the true class if an indivual is obese. Based on the CDC's suggestions, an individual with BMI level greater than 30 is considered obese. We require these true class values on our dataset for the developing and testing of our models. Therefore we add the following variable to the dataset:
+$$ Y = \begin{array}{cc}
+  \Bigg\{ & 
+    \begin{array}{cc}
+      0, & BMI\leq 30 \\
+      1, & BMI> 30
+    \end{array}
+\end{array}$$
+
+We then remove the following variables: BMI, Height, Weight, and NObeyesdad from our training data. This essential to the purpose behind building our models our values of the target variable Y is directly calculated from BMI, which is a result of Height and Weight and gives the resulting NObeyesdad categories. Our objective to to discover relationships between obesity and the other variables present in the dataset so that an obesity prediction can be provided when height and weight are not available.
+
+```{r pre processing, warning=FALSE, message=FALSE}
+library(infer)
+library(class)
+library(Metrics)
+library(yardstick) 
+library(randomForest)
+library(party)
+
+train = trainData %>% mutate(BMI = Weight / (Height^2),
+                       Y = as.factor(as.numeric(BMI > 30)))
+
+test = testData %>% mutate(BMI = Weight / (Height^2),
+                       Y = as.factor(as.numeric(BMI > 30)))
+
+
+test = test %>% dplyr::select(-BMI, -Weight, -Height, -NObeyesdad)
+train = train %>% dplyr::select(-BMI, -Weight, -Height, -NObeyesdad)
+
+
+# Is data balanced
+prop_table = train %>% 
+  group_by(Y) %>% 
+  summarize(proportion = n()/(nrow(train)))
+kable(prop_table)
+
+
+# Binary variable indicating whether an individual is obese or not obese
+target = train$Y
+# The actual classes of the individuals to compare our models results with
+actual = test$Y
+
+
+```
+
+
+
+When developing a model it is important to initially create the model assuming that the training data comprises our population, therefore, we analyze only the training data in our feature selection. For our feature selection in the classification models we will perform filtering methods. Filtering methods involve looking at the each feature of the dataset individually without considering its relationship with other covariates. Although this may overlook relationships between covariates such as multicollinearity, it is an effective appraoch. For each feature we perform the appropriate statistical test to determine its relationship with the target variable $Y$. 
+
+For the categorical variables, we will use a **Pearson’s Chi-Squared Test of Independence**. The Chi-Squared test is designed to analyze the relationship between categorical variables. It is called a "goodness of fit" test because it measures how likely the observed distribution of values fits the distribution under the null hypothesis, which assumes the two variables are independent. 
+
+For the remaining variables, which are numerical, we will use a **Two-sided T-test**. The Two-sided T-test is a statistic test used for evaluating if the means of two populations differ or not. Here the two populations are $Y = 0$, Non-obese individuals, and $Y = 1$, Obese individuals. For each feature we will test whether their mean values within the two groups are significantly different.
+
+
+
+```{r Var selection, warning=FALSE}
+
+categorical_table = tibble(Gender = chisq_test(train, Y ~ Gender)$p_value,
+               fhwo = chisq_test(train, Y ~ family_history_with_overweight)$p_value,
+               FAVC = chisq_test(train, Y ~ FAVC)$p_value,
+               CAEC = chisq_test(train, Y ~ CAEC)$p_value,
+               SMOKE = chisq_test(train, Y ~ SMOKE)$p_value,
+               SCC = chisq_test(train, Y ~ SCC)$p_value,
+               CALC = chisq_test(train, Y ~ CALC)$p_value,
+               MTRANS = chisq_test(train, Y ~ MTRANS)$p_value)
+
+# convert very small decimals to strings so are in table output
+categorical_table = categorical_table %>% mutate_if(is.numeric, funs(as.character(signif(., 3))))
+
+Variable = matrix(c("p-value"), nrow = 1)
+
+kable(cbind(Variable, categorical_table), caption = "\\label{tab2}P-values for Chi-Squared Test",
+      align = "c", longtable = TRUE)
+
+
+# chi-square test for categorical variables
+
+# Numerical variables
+numerical_table = tibble(Age = t_test(train, Age ~ Y)$p_value,
+               FCVC = t_test(train, FCVC ~ Y)$p_value,
+               NCP = t_test(train, NCP ~ Y)$p_value,
+               CH2O = t_test(train, CH2O ~ Y)$p_value,
+               FAF = t_test(train, FAF ~ Y)$p_value,
+               TUE = t_test(train, TUE ~ Y)$p_value)
+
+numerical_table = numerical_table %>% mutate_if(is.numeric, funs(as.character(signif(., 3))))
+
+kable(cbind(Variable, numerical_table), caption = "\\label{tab2}P-values for T-test",
+      align = "c", longtable = TRUE)
+
+
+# Remove independent variables 
+# remove independent variables with no difference with mean values for two classes of Y
+train = train %>% dplyr::select(-Gender, -SMOKE, -NCP)
+test = test %>% dplyr::select(-Gender, -SMOKE, -NCP)
+
+```
+From the tables we see that two categorical variables have a resulting p-value less than 0.05 from the Chi-Squared test. Therefore, at a 95% significance level we conclude that Gender and also 
+
+
+
+Now that we have our selected features to build our model, we will use them to predict our target class, the binary variable Y indicating if an individual is obese. There are many different classification models, in this report, we focus on logisitic regression, nearest neighbours, decision trees and random forests.
+
+## Logistic Regression
+
+Logistic regression is a regression model that can be turned into a classification model. This is done through the logit function which takes probabilities between 0 and 1 and transforms them to any real number. The result of this is a model that when given values of covariates it produces a probability that can be used as a threshold to determine what binary class that observation is to be labelled. This is particularly useful in our desired model as our target variable $Y$ is binary. Therefore, a logistic model could be used to predict the value of Y for an individual given value sof the covariates, that is, predict whether or not that individual is obese. However, Logistic regression uses the regression equation and therefore requires assumptions about the data to be satisfied. These assumptions include : Linearity of the logit, Independence of errors, Absence of multicollinearity, Lack of overdispersion, Adequacy of the model. For simplicity we will assume these properties are satisfied for our dataset.
+
+ perform Lasso?
+regularization regression is not likely to to improve our logistic model much since the number of features is not close to the 2111 observations and we do not see signs of multicollinearity.
+
+```{r logistic, warning=FALSE}
+
+log_model = glm(Y ~ ., data = train, family = "binomial")
+coefficients(log_model)
+
+
+
+```
+
+## Nearest Neighbors
+
+While some classification models require assumptions, other models such as Nearest Neighbors do not make any assumptions about the data. Nearest Neighbors is a simple model that involves determining the class of an observation based on the class of the other observations closest to it. Typically, the Euclidean distance is used to calculate the distance from the given observation to the observations of the given data base on values of the features. Since distance is calculated between the covariate values, it becomes clear that the covariates must be numeric. In our training data we have 8 categorical variables that we will exclude from this model. Therefore we will considering the 5 numerical features that were selected:  . However, there are techniques to convert categorical variables to numeric while keeping there relationship consistent and this should be explored in future analysis if wanting to improve our models. The class of a given observation is then determined by considering what the majority class of its nearest neighbors are. K is a hyper-parameter of the model that determines how many nearest neighbours to consider for any given observation. 
+
+Determining the value of K is specific to the data at hand and there is not a value of K that will work all of the time. Hence, we will calculate multiple models and evaluate them to determine the best value of K. We proceded by created models with the following values of K, $K = \{1, 3, ..., 101\}$. It is important to note that we are only considering odd values for K. This is becasue we have a a binary classification, if K were allowed ot be even then the majority class between its K nearest neighbors could be a tie and we would be unable to directly choose a class for that observation. In comparing the models numerically for each of the different K values we evaluate each one by calculating the models accuracy. Accuracy is defined as ratio of correct predictions over total predictions. Since our training data is approximately balanced accuracy is a valid measure of the model. We also consider Area Under the Curve (AUC)
+
+
+```{r knn, warning=FALSE}
+
+# only use numeric values for knn so calculates distance properly
+cols = sapply(train, is.numeric)
+
+# keep Y non-numeric target variable
+cols[length(cols)] = TRUE
+
+# alter dataset in preparation for knn() function
+train_k = train[cols]
+test_k = test[cols]
+
+
+# Find the best odd K value
+max_Acc = -Inf
+best_k = 0
+
+accuracys = numeric(50)
+f_scores = numeric(50)
+roc = numeric(50)
+
+max_f = -Inf
+f_k = 0
+
+max_a = -Inf
+a_k = 0
+
+for(i in seq(from = 0, to = 49, by = 1)){
+
+  pred_class2 = knn(train = train_k[,-length(train_k)], test = test_k[,-length(test_k)], 
+                    cl = train_k[,length(train_k)], k = (2*i + 1))
+  knn_prob = knn(train = train_k[,-length(train_k)], test = test_k[,-length(test_k)], 
+               cl = train_k[,length(train_k)], k = (2*i + 1), prob = TRUE)
+  
+  accuracys[i+1] = mean(pred_class2 == actual)
+  
+  f_scores[i+1] = fbeta_score(as.numeric(actual), as.numeric(pred_class2), beta = 1)
+  
+  knn_tab =  tibble(truth = actual,
+                  estimate = attr(knn_prob,'prob'))
+  
+  roc[i+1] = roc_auc(data = knn_tab, truth = truth, estimate, event_level = "second")$.estimate
+  
+  if(roc[i+1] > max_a){
+    max_a = roc[i+1]
+    a_k  = (2*i + 1)
+  }
+  if(f_scores[i+1] > max_f){
+    max_f = f_scores[i+1]
+    f_k  = (2*i + 1)
+  }
+  
+  if(accuracys[i+1] > max_Acc){
+    max_Acc = accuracys[i+1]
+    best_k  = (2*i + 1)
+  }
+  
+}
+# plot(accuracys)
+# max_Acc
+# best_k
+# 
+# plot(f_scores)
+# max_f
+# f_k
+# 
+# plot(roc)
+# max_a
+# a_k
+
+knn_prob = knn(train = train_k[,-length(train_k)], test = test_k[,-length(test_k)], 
+               cl = train_k[,length(train_k)], k = a_k, prob = TRUE)
+
+
+pred_class = knn(train = train_k[,-length(train_k)], test = test_k[,-length(test_k)], 
+                    cl = train_k[,length(train_k)], k = a_k)
+
+# table_knn = table(actual, pred_class)
+# 
+# accuracy_knn = sum(diag(table_knn))/sum(table_knn)
+accuracy_knn = mean(pred_class == actual)
+
+```
+
+## Decision Tree
+
+Nearest Neighbors is flexible as there are not assumptions but it is not the most interpreditable as it is difficult to tell which features are the most important in determining the class. Like Nearest Neighbors, Descision trees are another classification model that are flexible and do not make assumptions about the data. The main advantage of decesion trees is its easy interpretation. Decesion trees are known as universal approximators as it is easy to use them to create a model with perfect classification. However, it is important to evaluate the bias-variance tradeoff when consider the size and depth of the tree to avoid perfect classification model that results in overfitting. 
+
+We use all of the selected categorical and numerical variables to in the development of the decision tree. From this tree see that the root node consists of the variable family_history_with_overweight. We will assume that the `ctree()` function from the 'party' package selects the predicate at each node that maximizes the drop in entropy. This drop in entropy cant be quantified by the *Information Gain* of a predicate. This tells use that the predicate for if an individual has family history of overweightness maximizes the information gain our of all possible predicates. Since this variable is binary (yes/no), it tells use that this feature does the best job at dividing the individuals into the the correct class of obese and non-obese.
+
+Large trees can lead to overfitting and small trees can lead to underfitting so it is sometimes difficult to manually determine the best depth of the tree to minimize these risk while balancing the bias and variance. One strategy that addresses this issue is bagging. Bagging on decision trees involves creating bootstrap samples, that is sampling from the training data with replacement, and then building trees for each bootstrap sample. *Random Forests* are a classification model that utilizes bagging combined with random subspaces to improve the accuracy of decision trees. For each iteration a random selection of the features is performed so that each tree is not highly correlated. 
+
+We performed Random Forests on our dataset in attempt to improve our original decision tree performance. Below are the resulting confusion matrices when we applied these two models to our training data 
+
+```{r tree, warning=FALSE}
+
+tree = ctree(Y ~ ., data = train)
+
+class_pred = predict(tree, newdata = test)
+
+table_t = table(actual, class_pred)
+
+accuracy_t = sum(diag(table_t))/sum(table_t)
+accuracy_t
+
+
+
+rf = randomForest(Y ~ ., data = train)
+
+p = predict(rf, newdata = test)
+
+table_rf = table(actual, p)
+
+prob_rf = predict(rf, newdata = test, type = "prob")
+
+rf_probs = prob_rf[,2]
+
+mean(actual == p)
+```
+
+```{r confusion matrix, fig.pos = "V", fig.show = "hold", out.width="50%", fig.cap = "\\label{fig1}Box Plots of Interval Widths", echo = FALSE, warning=FALSE}
+kable(list(table_t, table_rf))
+# 
+# kable(table_rf)
+
+```
+
+
+# Results 
+
+There are various numerical measures of classification models including accurracy, precision, and recall. We deciding on the mosrt effective measure to use it is important to consider if our dataset is balanced or unblanced. Since the classes of obese and non-obese people is close to half of the total number of observations, we can say that the binary classification is balanced.
+
+There are also other visual measures to evaluate the performance of classification models such as the Receiver Operating Characteristic (ROC) curve and the Precision-Recall curve. Since our data is balanced we will plot the ROC curve for our various models to compare them. The ROC curve plots the true positive rate against the false positive rate for values of t between 0 and 1, where t is the probability threshold that determines the outcome class for that individual. When looking at he resulting line for a model, the closer the line goes towards the top left corner of the unit square, the better the model. As a result of this we can quantify the models performance by the Area Under the Curve (AUC) which directly calculates the area under the line within the unit square. An AUC value of 1 would be the result of a perfect classification model, while values from 0.8-0.9 represent an excellent model. We want to see the AUC value of a model greater than 0.5, otherwise that suggests that we could get a better performance by swapping the binary classes out of the model. The following is the ROC curve of the logistic model, the nearest neighbors model with the optimal k value, and the decision tree improved by the random forest method. 
+```{r analysis, warning=FALSE}
+prob_l = predict(log_model, newdata = test, type = "response")
+# pred_class_l = as.numeric(prob_l > 0.5)
+
+log_tab = tibble(truth = actual,
+                  estimate = prob_l,
+                  model = "Logistic Regression") 
+
+
+tree_prob = predict(tree, newdata = test, type = "prob")
+probs = unlist(lapply(tree_prob, FUN = function(x){x[2]}))
+
+knn_tab =  tibble(truth = actual,
+                  estimate = attr(knn_prob,'prob'),
+                  model = "Nearest Neighbors") 
+ 
+tree_tab <- tibble(truth = actual,
+                   estimate = probs,
+                   model = "Decision tree")
+
+tree_tab2 <- tibble(truth = actual,
+                   estimate = rf_probs,
+                   model = "Random Forest")
+
+data_pred <- bind_rows(knn_tab, tree_tab, tree_tab2, log_tab)
+
+
+# *** Since the data is balanced  ROC
+data_pred %>%
+  group_by(model) %>% 
+  roc_curve(truth, estimate, event_level = "second") %>% 
+  autoplot()
+
+table_auc = data_pred %>% 
+  group_by(model) %>% 
+  roc_auc(truth = truth, estimate, event_level = "second")
+
+# DATA CLEANING to get table in correct format to be displayed
+table_auc = table_auc %>% dplyr::select(-.metric, -.estimator) %>% 
+  pivot_wider(names_from = model,
+              values_from  = .estimate)
+Model = matrix(c("AUC"), nrow = 1)
+
+kable(cbind(Model, table_auc), caption = "\\label{tab2}Area Under the Curve for ROC",
+      align = "c", longtable = TRUE)
+
+# data_pred %>%
+#   group_by(model) %>% 
+#   pr_curve(truth, estimate, event_level = "second") %>% 
+#   autoplot()
+# 
+# data_pred %>% 
+#   group_by(model) %>% 
+#   pr_auc(truth = truth, estimate, event_level = "second")
+```
+
+
+From the plot, we see that the nearest neighbor model had the worst performance with an AUC of *0.5*. This is insightful as the nearest neighbor classification was trained only using the numerical features, suggesting that the categorical variables play a strong role in classifying an individual as obese. The logistic regression model involving all features has an AUC of *0.8*, performing much better than nearest neighbors but not nearly as strong as the decision tree model and the random forest model which had AUC value of *0.8* and *0.9*, respectively. The weaker performance of the logistic model may be a result of certain assumptions that were not satisfied. For example, the relationship between the features and obesity may not result in linearity fo the logit.
+
 
 
 ## Conclusions
