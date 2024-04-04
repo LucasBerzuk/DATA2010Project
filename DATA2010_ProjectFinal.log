@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.3.14)  4 APR 2024 18:18
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.3.14)  4 APR 2024 18:35
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -553,79 +553,85 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 Package hyperref Info: Link coloring ON on input line 139.
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 172.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 173.
 (c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 172.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 173.
 (c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 172.
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 173.
 (c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 172.
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 173.
 (c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 172.
+(Font)              <10> on input line 173.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 172.
+(Font)              <7> on input line 173.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 172.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 172.
+(Font)              <5> on input line 173.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 173.
 (c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 172.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 173.
 (c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
 {c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}]
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 285.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 243.
 (c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-<DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-4-1.pdf, id=25, 722.7pt x 578.16pt>
-File: DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-4-1.pdf Graphic file (type pdf)
-<use DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-4-1.pdf>
-Package pdftex.def Info: DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-4-1.pdf  used on input line 307.
+<DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-3-1.pdf, id=24, 722.7pt x 578.16pt>
+File: DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-3-1.pdf Graphic file (type pdf)
+<use DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-3-1.pdf>
+Package pdftex.def Info: DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-3-1.pdf  used on input line 265.
 (pdftex.def)             Requested size: 234.87471pt x 187.89977pt.
-<DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-4-2.pdf, id=26, 722.7pt x 578.16pt>
-File: DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-4-2.pdf Graphic file (type pdf)
-<use DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-4-2.pdf>
-Package pdftex.def Info: DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-4-2.pdf  used on input line 308.
-(pdftex.def)             Requested size: 234.87471pt x 187.89977pt.
-<DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-4-3.pdf, id=27, 722.7pt x 578.16pt>
-File: DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-4-3.pdf Graphic file (type pdf)
-<use DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-4-3.pdf>
-Package pdftex.def Info: DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-4-3.pdf  used on input line 309.
-(pdftex.def)             Requested size: 234.87471pt x 187.89977pt.
-<DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-4-4.pdf, id=28, 722.7pt x 578.16pt>
-File: DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-4-4.pdf Graphic file (type pdf)
-<use DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-4-4.pdf>
-Package pdftex.def Info: DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-4-4.pdf  used on input line 310.
+<DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-3-2.pdf, id=25, 722.7pt x 578.16pt>
+File: DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-3-2.pdf Graphic file (type pdf)
+<use DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-3-2.pdf>
+Package pdftex.def Info: DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-3-2.pdf  used on input line 266.
 (pdftex.def)             Requested size: 234.87471pt x 187.89977pt.
 
-Overfull \hbox (2.21661pt too wide) in paragraph at lines 307--311
-[][] []
+Overfull \hbox (2.21661pt too wide) in paragraph at lines 265--267
+[][] [] 
  []
 
 
-Overfull \hbox (2.21661pt too wide) in paragraph at lines 307--311
-[] [] 
+Overfull \hbox (2.92436pt too wide) in paragraph at lines 318--318
+ []|\T1/lmr/m/n/10 Correlation| 
  []
 
-[2 <./DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-4-1.pdf> <./DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-4-2.pdf>] [3 <./DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-4-3.pdf> <./DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-4-4.pdf>] [4]
-Overfull \hbox (5.95102pt too wide) in paragraph at lines 521--522
+[2 <./DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-3-1.pdf> <./DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-3-2.pdf>]
+<DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-5-1.pdf, id=45, 722.7pt x 578.16pt>
+File: DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-5-1.pdf Graphic file (type pdf)
+<use DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-5-1.pdf>
+Package pdftex.def Info: DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-5-1.pdf  used on input line 323.
+(pdftex.def)             Requested size: 234.87471pt x 187.89977pt.
+<DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-5-2.pdf, id=46, 722.7pt x 578.16pt>
+File: DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-5-2.pdf Graphic file (type pdf)
+<use DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-5-2.pdf>
+Package pdftex.def Info: DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-5-2.pdf  used on input line 324.
+(pdftex.def)             Requested size: 234.87471pt x 187.89977pt.
+
+Overfull \hbox (2.21661pt too wide) in paragraph at lines 323--325
+[][] [] 
+ []
+
+[3 <./DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-5-1.pdf> <./DATA2010_ProjectFinal_files/figure-latex/unnamed-chunk-5-2.pdf>] [4]
+Overfull \hbox (5.95102pt too wide) in paragraph at lines 535--536
  []\T1/lmr/m/n/10 SMOKE 
  []
 
 
-Overfull \hbox (5.95102pt too wide) in paragraph at lines 543--544
+Overfull \hbox (5.95102pt too wide) in paragraph at lines 557--558
  []\T1/lmr/m/n/10 SMOKE 
  []
 
@@ -633,68 +639,68 @@ Overfull \hbox (5.95102pt too wide) in paragraph at lines 543--544
 <DATA2010_ProjectFinal_files/figure-latex/analysis-1.pdf, id=97, 469.755pt x 325.215pt>
 File: DATA2010_ProjectFinal_files/figure-latex/analysis-1.pdf Graphic file (type pdf)
 <use DATA2010_ProjectFinal_files/figure-latex/analysis-1.pdf>
-Package pdftex.def Info: DATA2010_ProjectFinal_files/figure-latex/analysis-1.pdf  used on input line 803.
+Package pdftex.def Info: DATA2010_ProjectFinal_files/figure-latex/analysis-1.pdf  used on input line 817.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 [8 <./DATA2010_ProjectFinal_files/figure-latex/analysis-1.pdf>]
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 881.
-LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 884.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 895.
+LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 1014.
 (c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [9{c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}]
-Underfull \vbox (badness 10000) detected at line 1312
+) [9]
+Underfull \vbox (badness 10000) detected at line 1330
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1312
+Underfull \vbox (badness 10000) detected at line 1330
  []
 
 [10]
-Underfull \vbox (badness 10000) detected at line 1312
+Underfull \vbox (badness 10000) detected at line 1330
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1312
+Underfull \vbox (badness 10000) detected at line 1330
  []
 
-[11]
-Underfull \vbox (badness 10000) detected at line 1312
+[11{c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}]
+Underfull \vbox (badness 10000) detected at line 1330
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1312
+Underfull \vbox (badness 10000) detected at line 1330
  []
 
 [12]
-Underfull \vbox (badness 10000) detected at line 1312
+Underfull \vbox (badness 10000) detected at line 1330
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1312
+Underfull \vbox (badness 10000) detected at line 1330
  []
 
 [13]
-Underfull \vbox (badness 10000) detected at line 1312
+Underfull \vbox (badness 10000) detected at line 1330
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1312
+Underfull \vbox (badness 10000) detected at line 1330
  []
 
 [14]
-Underfull \vbox (badness 10000) detected at line 1312
+Underfull \vbox (badness 10000) detected at line 1330
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1312
+Underfull \vbox (badness 10000) detected at line 1330
  []
 
 [15]
-Underfull \vbox (badness 10000) detected at line 1312
+Underfull \vbox (badness 10000) detected at line 1330
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1312
+Underfull \vbox (badness 10000) detected at line 1330
  []
 
 [16] [17] (./DATA2010_ProjectFinal.aux)
@@ -707,18 +713,18 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 13951 strings out of 476075
- 221377 string characters out of 5790813
- 1975190 words of memory out of 5000000
- 35749 multiletter control sequences out of 15000+600000
- 600711 words of font info for 67 fonts, out of 8000000 for 9000
+ 13954 strings out of 476075
+ 221419 string characters out of 5790813
+ 1976190 words of memory out of 5000000
+ 35751 multiletter control sequences out of 15000+600000
+ 601016 words of font info for 68 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 89i,12n,93p,470b,593s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 89i,12n,93p,480b,591s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb><c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr5.pfb><c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/Users/HP USER/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on DATA2010_ProjectFinal.pdf (17 pages, 630083 bytes).
+Output written on DATA2010_ProjectFinal.pdf (17 pages, 663911 bytes).
 PDF statistics:
- 283 PDF objects out of 1000 (max. 8388607)
- 223 compressed objects within 3 object streams
+ 286 PDF objects out of 1000 (max. 8388607)
+ 225 compressed objects within 3 object streams
  53 named destinations out of 1000 (max. 500000)
  146 words of extra memory for PDF output out of 10000 (max. 10000000)
 

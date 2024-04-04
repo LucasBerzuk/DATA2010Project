@@ -35,29 +35,6 @@ To complement the various regression models, classification models were built us
 
 The data used as the basis for this paper comes from a study performed in Mexico, Peru and Colombia. It has 17 attributes and 2111 data points. The 17 attributes comprise 4 different variable types: 6 continuous, 2 ordinal, 5 categorical, and 4 binary. This data consists of an individual's behavioural patterns such as eating habits and physical condition, as well as their level of obesity. It is important to note that up to 77% of this data has been synthetically generated because of a greatly unbalanced number of samples between the different obesity categories in the sample data. The balancing was performed using the SMOTE filter with the Weka tool. The purpose was to create data points within the obesity categories with lower counts. This lead to an overall data set with uniform counts for the different obesity levels. The data was collected through a voluntary online survey that had 16 questions with a variety of responses. It was accessible for 30 days for users to complete. The researchers of this study calculated Body Mass Index using the equation $BMI = \frac{weight}{height^2}$ to determine the BMI of every respondent. The BMI values were then placed into different obesity level categories based on the World Health Organization and Mexican Normativity. The categories can be observed in Table 1.
 
-```{r}
-library(kableExtra)
-# df = data.frame("Obesity Level" = c("Insufficient Weight", "Normal Weight",
-#                                              "Overweight Level I", "Overweight Level II",
-#                                              "Obesity Type I", "Obesity Type II",
-#                                                     "Obesity Type III"),
-#                 "BMI" = c("<18.5", "18.5-22.9", "23.0-25.9", "26.0-29.9", "30.0-34.9", "35.0-39.9", ">40"))
-# 
-# kable(df, caption = "\\label{tab1}Categorizing Obesity Levels") %>% 
-#   column_spec(2:2,border_left = T) 
-
-mat = matrix(c(
-                "BMI", "<18.5", "18.5-22.9", "23.0-25.9", "26.0-29.9", "30.0-34.9", "35.0-39.9", ">40"), nrow = 1, ncol = 8, byrow = TRUE)
-
-colnames(mat) = c("Obesity Level", "Insufficient Weight", "Normal Weight",
-                                             "Overweight Level I", "Overweight Level II",
-                                             "Obesity Type I", "Obesity Type II",
-                                                    "Obesity Type III")
-kable(mat, align = "c", caption = "\\label{tab1}Categorizing Obesity Levels")
-
-```
-
-
 //TODO
 - Talk about our preprocessing stuff (do we need this????)
 
@@ -165,17 +142,10 @@ rmse14 = sqrt(mean((BMI - p)^2))
 cat("Gender =", rmse1, "\nAge =", rmse2, "\nHistory of overweight =", rmse3, "\nFreq consumption of high caloric food =", rmse4, "\nFreq consumption of vegetables =", rmse5, "\nNumber of main meals =", rmse6, "\nConsumption of food between meals =", rmse7, "\nSmoke =", rmse8, "\nConsumption of water =", rmse9, "\nCalorie consumption monitoring =", rmse10, "\nFreq of physical activity =", rmse11, "\nTime using electronics =", rmse12, "\nConsumption of alcohol =", rmse13, "\nTransportation used =", rmse14)
 ```
 
-Noticing that *Gender*, *Number of main meals*, *Smoke* and *Time using electronics* were the variables that lead to the lowest RMSE values (under 8), we decided to graph these variables with for visual input. Here are those graphs.
+Noticing that *Number of main meals* and *Time using electronics* were the variables that lead to the lowest RMSE values (under 8), and were numeric. We decided to graph these variables with for visual input. Here are those graphs.
 
 ```{r, fig.width=10, fig.height=8, out.width='50%', out.height='50%'}
 # Lets graph the regression models
-
-# Gender
-m = lm(BMI ~ Gender, data = trainData)
-trainData |>
-  mutate(fitted = fitted(m)) |>
-  ggplot(aes(x = Gender)) + geom_point(aes(y = BMI), size = 1) +
-  ggtitle("Relationship between Gender and BMI")
 
 # NCP
 m = lm(BMI ~ poly(NCP, 4), data = trainData)
@@ -186,18 +156,57 @@ trainData |>
             colour = "red", linewidth = 1) + 
   ggtitle("Relationship between NCP and BMI")
 
-# SMOKE
-m = lm(BMI ~ SMOKE, data = trainData)
-trainData |>
-  mutate(fitted = fitted(m)) |>
-  ggplot(aes(x = SMOKE)) + geom_point(aes(y = BMI), size = 1) +
-  ggtitle("Relationship between SMOKE and BMI")
-
 # TUE
 m = lm(BMI ~ poly(TUE, 4), data = trainData)
 trainData |>
   mutate(fitted = fitted(m)) |>
   ggplot(aes(x = TUE)) + geom_point(aes(y = BMI), size = 1) +
+  geom_line(aes(y = fitted),
+            colour = "red", linewidth = 1) +
+  ggtitle("Relationship between TUE and BMI")
+```
+
+From our previous progress report we noticed that the correlation with Vegetable consumption and Age were quite high as you can see here. 
+
+```{r}
+library(kableExtra)
+ObesityDataset = dataset %>% mutate(BMI = Weight / (Height^2))
+table = ObesityDataset %>% summarize("Age" = round(cor(ObesityDataset$BMI, 
+                                                 ObesityDataset$Age, method = "spearman"), 4),
+                               "Vegetable Consumption" = round(cor(ObesityDataset$BMI,
+                                                             ObesityDataset$FCVC, method = "spearman"), 4),
+                       "Meals Quantity" = round(cor(ObesityDataset$BMI, 
+                                              ObesityDataset$NCP, method = "spearman"), 4),
+                       "Water Consumption" = round(cor(ObesityDataset$BMI, ObesityDataset$CH2O,method = "spearman"), 4),
+                       "Physical Activity" = round(cor(ObesityDataset$BMI, ObesityDataset$FAF,
+                                                 method = "spearman"),4),
+                       "Screen Time" = round(cor(ObesityDataset$BMI, ObesityDataset$TUE, 
+                                           method = "spearman"), 4))
+
+Variable = matrix(c("Correlation"), nrow = 1)
+
+kable(cbind(Variable, table), align = "c", longtable = TRUE, caption = "\\label{tab1}Correlation")
+```
+
+This led us to want to plot those variables too. Here are those plots.
+
+```{r, fig.width=10, fig.height=8, out.width='50%', out.height='50%'}
+# Lets graph the regression models
+
+# Age
+m = lm(BMI ~ poly(Age, 4), data = trainData)
+trainData |>
+  mutate(fitted = fitted(m)) |>
+  ggplot(aes(x = Age)) + geom_point(aes(y = BMI), size = 1) +
+  geom_line(aes(y = fitted),
+            colour = "red", linewidth = 1) + 
+  ggtitle("Relationship between Age and BMI")
+
+# FCVC
+m = lm(BMI ~ poly(FCVC, 4), data = trainData)
+trainData |>
+  mutate(fitted = fitted(m)) |>
+  ggplot(aes(x = FCVC)) + geom_point(aes(y = BMI), size = 1) +
   geom_line(aes(y = fitted),
             colour = "red", linewidth = 1) +
   ggtitle("Relationship between TUE and BMI")
