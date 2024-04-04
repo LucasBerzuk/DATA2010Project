@@ -416,3 +416,10 @@ abs(corMatrix)
 print("There is no evidence of multicollinearity")
 # ------------------------------------------------
 ```
+
+
+
+```{r}
+cat("Minimum: ", min(BMI))
+cat("Maximum: ", max(BMI))
+```
