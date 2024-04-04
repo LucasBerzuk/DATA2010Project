@@ -86,6 +86,7 @@ testData = dataset[-row.number, ]
 # BMI to use
 BMI = trainData$Weight / (trainData$Height ^2)
 ```
+
 We decide to model many forms of regression on our data to calculate RMSE and see how far off predicted values would be from observed values for this obesity dataset. We first started off by performing standard Linear regression with BMI where $BMI = \frac{weight}{height^2}$, on every variable that was in the dataset (aside from height and weight because that is what is used in BMI). For the categorical variables we had to factor them before performing regression because otherwise we would not be able to test them. These are the RMSE values that we found for every variable in the dataset.
 
 ```{r}
@@ -291,13 +292,13 @@ rmseLasso = sqrt(mean((y_test - predLasso)^2))
 cat("RMSE =", rmseLasso)
 ```
 
-The result is just slightly lower than the previous 2 Lasso regression attempts so it seems like we may be at a dead end here. But we tried one more just to see what happened. Ridge regression gave us similar RMSE values to Lasso but just slightly higher no matter what variables we used in the model. The range of BMIs that we acquired from the dataset are from:
+The result is just slightly lower than the previous 2 Lasso regression attempts so it seems like we may be at a dead end here. But we tried one more just to see what happened. Ridge regression gave us similar RMSE values to Lasso but just slightly higher no matter what variables we used in the model. 
 
+The range of BMIs that we acquired from the dataset are from:
 ```{r}
 cat("Minimum =", min(BMI))
 cat("Maximum =", max(BMI))
 ```
-
 So the RMSE floating around 8 is not the end of the world but we definitely wish that we could improve it more. 
 
 Next we wanted to try to see if there was any evidence of multicollinearity. So we created a correlation matrix and scanned the values to see if there was anything close enough to 1 or -1 to be considered evidence of multicollinearity, but there was nothing close enough to prove this so we state that there is no multicollinearity in this dataset.
