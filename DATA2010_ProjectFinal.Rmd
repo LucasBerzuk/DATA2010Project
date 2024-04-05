@@ -89,7 +89,7 @@ testData = dataset[-row.number, ]
 BMI = trainData$Weight / (trainData$Height ^2)
 ```
 
-To ensure that the most effective regression method was used, many different methods were utilized and subsequently compared using their RSME values. These methods were Linear, Spline, Lasso, and Ridge regression.
+To ensure that the most effective regression method was used, many different methods were utilized and subsequently compared using their RMSE values. These methods were Linear, Spline, Lasso, and Ridge regression.
 
 Before proceeding with creating the regression models, it was important to check the correlation between the variables and *BMI*. These investigations lead to discovering relatively high correlation between *BMI* and *vegetable consumption* (FCVC), as well as between *BMI* and *age*. A table of these findings can be found below along with graphs of the two aforementioned variables.
 
@@ -146,7 +146,7 @@ trainData |>
 ```
 
 In order to determine which variables in the dataset are the most valuable in predicting *BMI*, linear regression models were created using each variable available, with the exception of height and weight, which were used directly for calculating BMI, as well as obesity level category, which was categorized directly from *BMI*. Prior to making the models, the categorical variables in the dataset were factorized to allow them to be used in the model. 
-The following list presents the 14 variables that were considered alongside their respective linear regression model's RSME values in order from least to greatest:
+The following list presents the 14 variables that were considered alongside their respective linear regression model's RMSE values in order from least to greatest:
 
 ```{r}
 # Performing regression on every variable with BMI
