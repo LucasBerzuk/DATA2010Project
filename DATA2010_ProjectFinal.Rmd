@@ -142,7 +142,7 @@ m = lm(BMI ~ MTRANS, data = trainData)
 p = predict(m, newdata = testData)
 rmse14 = sqrt(mean((BMI - p)^2))
 
-cat("\nSmoke =", rmse8, "\nNumber of main meals =", rmse6, "Gender =", rmse1, "\nTime using electronics =", rmse12, "\nConsumption of water =", rmse9, "\nTransportation used =", rmse14, "\nCalorie consumption monitoring =", rmse10, "\nFreq of physical activity =", rmse11, "\nConsumption of alcohol =", rmse13, "\nFreq consumption of high caloric food =", rmse4, "\nFreq consumption of vegetables =", rmse5, "\nAge =", rmse2, "\nConsumption of food between meals =", rmse7, "\nHistory of overweight =", rmse3)
+cat("Smoke =", rmse8, "\nNumber of main meals =", rmse6, "\nGender =", rmse1, "\nTime using electronics =", rmse12, "\nConsumption of water =", rmse9, "\nTransportation used =", rmse14, "\nCalorie consumption monitoring =", rmse10, "\nFreq of physical activity =", rmse11, "\nConsumption of alcohol =", rmse13, "\nFreq consumption of high caloric food =", rmse4, "\nFreq consumption of vegetables =", rmse5, "\nAge =", rmse2, "\nConsumption of food between meals =", rmse7, "\nHistory of overweight =", rmse3)
 ```
 
 Noticing that *Number of main meals (NCP)* and *Time using electronics (TUE)* were the variables that lead to the lowest RMSE values (under 8), and were numeric. We decided to graph these variables with for visual input. Here are those graphs.
