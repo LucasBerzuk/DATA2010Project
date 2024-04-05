@@ -367,7 +367,7 @@ In addition to predicting BMI levels, determining whether or not an individual i
 
 ## Pre-processing 
 
-The BMI values have been calculated for each individual and will be used to determine the true class values of if an individual is obese or not. Based on the CDC's definition of obese, an individual with a BMI level greater than 30 is considered obese [3]. These true class values on our dataset are required for the developing and testing of our models. Therefore, before proceeding further, the following variable was to the dataset:
+The BMI values have been calculated for each individual and will be used to determine the true class values of if an individual is obese or not. Based on the CDC's definition of obese, an individual with a BMI level greater than 30 is considered obese [3]. These true class values are required in our dataset for the developing and testing of our models. Therefore, before proceeding further, the following variable was added to the dataset:
 $$ Y = \begin{array}{cc}
   \Bigg\{ & 
     \begin{array}{cc}
