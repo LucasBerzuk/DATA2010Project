@@ -26,16 +26,40 @@ There are many different tools for measuring obesity levels, some of which inclu
 
 In this paper, different statistical models were created that attempt to predict obesity levels based on variables other than height and weight. These models were trained and tested using data obtained from a study conducted at Coast University in Colombia [1]. The data includes 17 different attributes regarding an individual's lifestyle choices and patterns. This study will be explained in greater depth in the following "Data Analysis" section. 
 
-Using data analysis, it was found that the following variables are the most valuable in evaluating an individual's risk of obesity: *insert the variables used*. Various regression models were built using BMI as the target variable and the rest of the variables in the data set as the predictor variables to determine which ones are the most valuable in predicting obesity. In doing so, an individual's risk of obesity is able to be predicted using information about their lifestyle. The regression methods used to create these models were Linear, Spline, Lasso, and Ridge regression. Root mean squared error (RMSE) was calculated for each model as a means of comparing which model had the greatest prediction ability. 
+Various regression models were built using BMI as the target variable and the rest of the variables in the data set as the predictor variables to determine which ones are the most valuable in predicting obesity. In doing so, an individual's BMI is able to be determined, which helps predict the risk of obesity using information about their lifestyle. The regression methods used to create these models were Linear, Spline, Lasso, and Ridge regression. Root mean squared error (RMSE) was calculated for each model as a means of comparing which model had the greatest prediction ability. Unfortunately, the results from the regression models was not found to be adequate in accurately determining an individual's BMI, as the lowest RMSE value that could be obtained was *7.929959* using the *SMOKE* variable with Linear regression.
 
-To complement the various regression models, classification models were built using the same data. These models perform a binary classification predicting whether or not an individual is obese. We performed a filtering variable selection to determine the features that would be used in training the models. The classification methods used to create these models include logistic regression, nearest neighbors, and decisions trees. For each of these models, techniques were then applied in attempts in improve the models ability to predict obesity. The resulting models are then analyzed by classification metrics such as accuracy and the Receiver Operating Characteristic (ROC) curve to determine the best model.
+As an alternative to the regression models, classification models were built using the same data. These models perform a binary classification predicting whether or not an individual is obese. Based on the CDC's definition of obese, an individual with a BMI level greater than 30 was considered obese for the classification models [3]. Filtering variable selection was performed to determine the features that would be used in training the models. The classification methods used to create these models include logistic regression, nearest neighbors, and decisions trees. For each of these models, techniques were then applied in attempts in improve the models ability to predict obesity. The resulting models are then analyzed by classification metrics such as accuracy and the Receiver Operating Characteristic (ROC) curve to determine the best model. These classification models determined that the variable *family_history_with_overweight* has a significant role in predicting the obesity of an individual.
 
 ## Data Analysis
 
-The data used as the basis for this paper comes from a study performed in Mexico, Peru and Colombia. It has 17 attributes and 2111 data points. The 17 attributes comprise 4 different variable types: 6 continuous, 2 ordinal, 5 categorical, and 4 binary. This data consists of an individual's behavioural patterns such as eating habits and physical condition, as well as their level of obesity. It is important to note that up to 77% of this data has been synthetically generated because of a greatly unbalanced number of samples between the different obesity categories in the sample data. The balancing was performed using the SMOTE filter with the Weka tool. The purpose was to create data points within the obesity categories with lower counts. This lead to an overall data set with uniform counts for the different obesity levels. The data was collected through a voluntary online survey that had 16 questions with a variety of responses. It was accessible for 30 days for users to complete. The researchers of this study calculated Body Mass Index using the equation $BMI = \frac{weight}{height^2}$ to determine the BMI of every respondent. The BMI values were then placed into different obesity level categories based on the World Health Organization and Mexican Normativity.
+The data used as the basis for this paper comes from a study performed in Mexico, Peru and Colombia. It has 17 attributes and 2111 data points. The 17 attributes comprise 4 different variable types: 7 numerical, 6 categorical, and 4 binary. This data consists of an individual's behavioural patterns such as eating habits and physical condition, as well as their level of obesity. It is important to note that up to 77% of this data has been synthetically generated because of a greatly unbalanced number of samples between the different obesity categories in the sample data. The balancing was performed using the SMOTE filter with the Weka tool. The purpose was to create data points within the obesity categories with lower counts. This lead to an overall data set with uniform counts for the different obesity levels. The data was collected through a voluntary online survey that had 16 questions with a variety of responses. It was accessible for 30 days for users to complete. The researchers of this study calculated Body Mass Index using the equation $BMI = \frac{weight}{height^2}$ to determine the BMI of every respondent. The BMI values were then placed into different obesity level categories based on the World Health Organization and Mexican Normativity.
 
 In our regression and classification models we use the same training and testing data. To do this we split our data up so that 70% of the original data will be used as the training data and the other 30% will be used to test our models. We first check our data set for missing values and find that there are no missing entries. We then convert all categorical variables to factored variables with levels so that we can involve them in our models. BMI levels are not present in the given dataset so we directly use height and weight with the above formula to add BMI values for each individual to our dataset.
 
+## Dataset Variables
+
+The variables from the study that were considered in our models were as follows:
+```{r dataset variables table}
+library(kableExtra)
+v = matrix(ncol = 4, nrow = 15)
+v[1,] = c("Variable", "Variable Name", "Variable Type", "Variable Response")
+v[2,] = c("Smoke", "SMOKE", "Binary", "Yes / No")
+v[3,] = c("Number of main meals", "NCP", "Categorical", "Between 1 and 2 / 3 / More than 3")
+v[4,] = c("Gender", "Gender", "Binary", "Male / Female")
+v[5,] = c("Time using electronics", "TUE", "Numerical", "0-2 hours / 3-5 hours / More than 5 hours daily")
+v[6,] = c("Consumption of water","CH20", "Numerical", "Less than a liter / Between 1 and 2 liters / More than 2 liters daily")
+v[7,] = c("Transportation used", "MTRANS", "Categorical", "Automobile / Motorbike / Bike / Public transportation / Walking")
+v[8,] = c("Calorie consumption monitoring", "SCC", "Binary", "Yes / No")
+v[9,] = c("Freq of physical activity", "FAF", "Numerical", "I do not have / 1 or 2 days / 2 or 4 days / 4 or 5 days a week")
+v[10,] = c("Freq of Consumption of alcohol", "CALC", "Categorical", "I do not drink / Sometimes / Frequently / Always")
+v[11,] = c("Freq consumption of high caloric food", "FAVC", "Binary", "Yes / No")
+v[12,] = c("Freq consumption of vegetables", "FCVC", "Categorical", "Never / Sometimes / Always")
+v[13,] = c("Age", "Age", "Numerical", "Numeric value for age")
+v[14,] = c("Consumption of food between meals", "CAEC", "Categorical", "No / Sometimes / Frequently / Always")
+v[15,] = c("History of overweight", "family_history_with_overweight", "Binary", "Yes / No")
+kbl(v, align = "c", caption = "\\label{tab1}Dataset Variables", booktabs = T) %>%
+  kable_styling(latex_options = c("striped", "scale_down"))
+```
 
 # Methods
 ## Regression
@@ -66,7 +90,62 @@ BMI = trainData$Weight / (trainData$Height ^2)
 ```
 
 To ensure that the most effective regression method was used, many different methods were utilized and subsequently compared using their RSME values. These methods were Linear, Spline, Lasso, and Ridge regression.
-First, in order to determine which variables in the dataset are the most valuable in predicting BMI, linear regression models were created using each variable available, with the exception of height and weight, which were used directly for calculating BMI, as well as obesity level category, which was categorized directly from BMI. Prior to making the models, the categorical variables in the dataset were factorized to allow them to be used in the model. 
+
+Before proceeding with creating the regression models, it was important to check the correlation between the variables and *BMI*. These investigations lead to discovering relatively high correlation between *BMI* and *vegetable consumption* (FCVC), as well as between *BMI* and *age*. A table of these findings can be found below along with graphs of the two aforementioned variables.
+
+```{r}
+library(kableExtra)
+ObesityDataset = dataset %>% mutate(BMI = Weight / (Height^2))
+table = ObesityDataset %>% summarize("Age" = round(cor(ObesityDataset$BMI, 
+                                                 ObesityDataset$Age, method = "spearman"), 4),
+                               "Vegetable Consumption" = round(cor(ObesityDataset$BMI,
+                                                             ObesityDataset$FCVC, method = "spearman"), 4),
+                       "Meals Quantity" = round(cor(ObesityDataset$BMI, 
+                                              ObesityDataset$NCP, method = "spearman"), 4),
+                       "Water Consumption" = round(cor(ObesityDataset$BMI, ObesityDataset$CH2O,method = "spearman"), 4),
+                       "Physical Activity" = round(cor(ObesityDataset$BMI, ObesityDataset$FAF,
+                                                 method = "spearman"),4),
+                       "Screen Time" = round(cor(ObesityDataset$BMI, ObesityDataset$TUE, 
+                                           method = "spearman"), 4))
+
+Variable = matrix(c("Correlation"), nrow = 1)
+
+kable(cbind(Variable, table), align = "c", longtable = TRUE, caption = "\\label{tab2}Correlation")
+```
+
+Next, evidence of multicollinearity was checked for. A correlation matrix was created and checked to see if there was any values close enough to 1 or -1 to be considered evidence of multicollinearity. The results showed that there were no values close enough to consider the dataset as having evidence of multicollinearity, as can be found below. 
+
+```{r}
+# Checking for multicollinearity
+double_vars = sapply(dataset, function(x) is.numeric(x) && !all(x %% 1 == 0))
+double_data = trainData[, double_vars]
+corMatrix = cor(double_data)
+abs(corMatrix)
+```
+
+```{r, fig.width=10, fig.height=8, out.width='50%', out.height='50%'}
+# Lets graph the regression models
+
+# Age
+m = lm(BMI ~ poly(Age, 4), data = trainData)
+trainData |>
+  mutate(fitted = fitted(m)) |>
+  ggplot(aes(x = Age)) + geom_point(aes(y = BMI), size = 1) +
+  geom_line(aes(y = fitted),
+            colour = "red", linewidth = 1) + 
+  ggtitle("Relationship between Age and BMI")
+
+# FCVC
+m = lm(BMI ~ poly(FCVC, 4), data = trainData)
+trainData |>
+  mutate(fitted = fitted(m)) |>
+  ggplot(aes(x = FCVC)) + geom_point(aes(y = BMI), size = 1) +
+  geom_line(aes(y = fitted),
+            colour = "red", linewidth = 1) +
+  ggtitle("Relationship between TUE and BMI")
+```
+
+In order to determine which variables in the dataset are the most valuable in predicting *BMI*, linear regression models were created using each variable available, with the exception of height and weight, which were used directly for calculating BMI, as well as obesity level category, which was categorized directly from *BMI*. Prior to making the models, the categorical variables in the dataset were factorized to allow them to be used in the model. 
 The following list presents the 14 variables that were considered alongside their respective linear regression model's RSME values in order from least to greatest:
 
 ```{r}
@@ -145,7 +224,7 @@ rmse14 = sqrt(mean((BMI - p)^2))
 cat("Smoke =", rmse8, "\nNumber of main meals =", rmse6, "\nGender =", rmse1, "\nTime using electronics =", rmse12, "\nConsumption of water =", rmse9, "\nTransportation used =", rmse14, "\nCalorie consumption monitoring =", rmse10, "\nFreq of physical activity =", rmse11, "\nConsumption of alcohol =", rmse13, "\nFreq consumption of high caloric food =", rmse4, "\nFreq consumption of vegetables =", rmse5, "\nAge =", rmse2, "\nConsumption of food between meals =", rmse7, "\nHistory of overweight =", rmse3)
 ```
 
-Noticing that *Number of main meals (NCP)* and *Time using electronics (TUE)* were the variables that lead to the lowest RMSE values (under 8), and were numeric. We decided to graph these variables with for visual input. Here are those graphs.
+To create a visual reference for how the regression models were performing, *number of main meals* (NCP) and *time using electronics* (TUE) were graphed because they were the numerical variables that lead to the lowest RMSE values (under 8). These graphs can be found below.
 
 ```{r, fig.width=10, fig.height=8, out.width='50%', out.height='50%'}
 # Lets graph the regression models
@@ -169,53 +248,7 @@ trainData |>
   ggtitle("Relationship between TUE and BMI")
 ```
 
-From our previous progress report we noticed that the correlation with Vegetable consumption and Age were quite high as you can see here. 
-
-```{r}
-library(kableExtra)
-ObesityDataset = dataset %>% mutate(BMI = Weight / (Height^2))
-table = ObesityDataset %>% summarize("Age" = round(cor(ObesityDataset$BMI, 
-                                                 ObesityDataset$Age, method = "spearman"), 4),
-                               "Vegetable Consumption" = round(cor(ObesityDataset$BMI,
-                                                             ObesityDataset$FCVC, method = "spearman"), 4),
-                       "Meals Quantity" = round(cor(ObesityDataset$BMI, 
-                                              ObesityDataset$NCP, method = "spearman"), 4),
-                       "Water Consumption" = round(cor(ObesityDataset$BMI, ObesityDataset$CH2O,method = "spearman"), 4),
-                       "Physical Activity" = round(cor(ObesityDataset$BMI, ObesityDataset$FAF,
-                                                 method = "spearman"),4),
-                       "Screen Time" = round(cor(ObesityDataset$BMI, ObesityDataset$TUE, 
-                                           method = "spearman"), 4))
-
-Variable = matrix(c("Correlation"), nrow = 1)
-
-kable(cbind(Variable, table), align = "c", longtable = TRUE, caption = "\\label{tab1}Correlation")
-```
-
-This led us to want to plot those variables too. Here are those plots.
-
-```{r, fig.width=10, fig.height=8, out.width='50%', out.height='50%'}
-# Lets graph the regression models
-
-# Age
-m = lm(BMI ~ poly(Age, 4), data = trainData)
-trainData |>
-  mutate(fitted = fitted(m)) |>
-  ggplot(aes(x = Age)) + geom_point(aes(y = BMI), size = 1) +
-  geom_line(aes(y = fitted),
-            colour = "red", linewidth = 1) + 
-  ggtitle("Relationship between Age and BMI")
-
-# FCVC
-m = lm(BMI ~ poly(FCVC, 4), data = trainData)
-trainData |>
-  mutate(fitted = fitted(m)) |>
-  ggplot(aes(x = FCVC)) + geom_point(aes(y = BMI), size = 1) +
-  geom_line(aes(y = fitted),
-            colour = "red", linewidth = 1) +
-  ggtitle("Relationship between TUE and BMI")
-```
-
-After some consideration, we decided to try spline regression on the 2 numerical variables out of these 4 to see if that would improve the RMSE values any further. These were the results:
+In an attempt to improve RMSE values further, spline regression was used on the two best performing numerical variables mentioned above. However, the RMSE values were found to be worse than those found with linear regression. The RMSE values after spline regression were as follows:
 
 ```{r}
 # Spline regression on the numerical variables to see if its a better approach
@@ -233,9 +266,7 @@ rmse2 = sqrt(mean((BMI - p)^2))
 cat("Number of main meals =", rmse1, "\nTime using electronics =", rmse2)
 ```
 
-It turns out that spline regression did not improve the error in our case so we had to try something else.
-
-We moved to attempt Lasso regression to yet again try and improve our values. When performing Lasso regression on the 4 original variables that all had RMSE under 8, this is what we got with a lambda of 1.2.
+Next, Lasso regression was attempted to again improve RMSE values. Lasso regression was performed using the four variables that had RMSE under 8. With a lamba value of 1.2, the RMSE was:
 
 ```{r}
 # Lasso regression with all the lower error variables
@@ -258,7 +289,7 @@ rmseLasso = sqrt(mean((y_test - predLasso)^2))
 cat("RMSE =", rmseLasso)
 ```
 
-This is a good RMSE value but it is not lower than any 1 of the 4 original RMSE values gained from using Linear regression. Because we still can not seem to get it lower that the original 4, we decided to do Lasso regression with all of the variables and this was the result with a lambda of 4:
+Relative to the previous RMSE values found, this value was good but not lower than any of the RMSE values found using Linear regression. As a further attempt using Lasso regression, all of the variables were used with a lamba value of 4. The RMSE with this approach was:
 
 ```{r}
 # Lasso regression all variables (no weight and height)
@@ -281,7 +312,7 @@ rmseLasso = sqrt(mean((y_test - predLasso)^2))
 cat("RMSE =", rmseLasso)
 ```
 
-This turned out to give us the exact same RMSE. Maybe we could try and use less variables? This is with just the Gender and SMOKE variable at the lambda of 0.27.
+The RMSE produced was identical. As a final attempt at Lasso regression, *gender* and *smoke* were attempted with a lambda value of 0.27. The RMSE was:
 
 ```{r}
 # Lasso regression all variables (no weight and height)
@@ -304,48 +335,36 @@ rmseLasso = sqrt(mean((y_test - predLasso)^2))
 cat("RMSE =", rmseLasso)
 ```
 
-The result is just slightly lower than the previous 2 Lasso regression attempts so it seems like we may be at a dead end here. But we tried one more just to see what happened. Ridge regression gave us similar RMSE values to Lasso but just slightly higher no matter what variables we used in the model. 
+This RMSE value is only slightly lower than the previous 2 Lasso regression attempts, so it was decided that Lasso regression would not be the best way to model the data.
 
-The range of BMIs that we acquired from the dataset are from:
+The final regression method attempted was Ridge regression. Ridge regression gave similar RMSE values to Lasso, but always slightly higher regardless of the variables used in the model. 
+
+To determine the merit of RMSE values of approximately 8, the range of BMI values in the dataset were considered:
 
 ```{r}
 cat("Minimum =", min(BMI))
 cat("Maximum =", max(BMI))
 ```
 
-So the RMSE floating around 8 is not the end of the world but we definitely wish that we could improve it more. 
-
-Next we wanted to try to see if there was any evidence of multicollinearity. So we created a correlation matrix and scanned the values to see if there was anything close enough to 1 or -1 to be considered evidence of multicollinearity.
-
-```{r}
-# Checking for multicollinearity
-double_vars = sapply(dataset, function(x) is.numeric(x) && !all(x %% 1 == 0))
-double_data = trainData[, double_vars]
-corMatrix = cor(double_data)
-abs(corMatrix)
-```
-
-As we can see, there is nothing close enough to prove this so we state that there is no multicollinearity in this dataset.
-
+Given this range, RMSE values of 8 are not unusable, however they are not good enough to be confident in using these models unless improvements are made. 
 
 ### Results
 
-After performing all of our regression testing, we saw that the lowest RMSE values we were able to obtain through various methods of regression was always around 8. There was no method that we could find that would allow us to narrow the model even further in order to get a more accurate prediction of BMI. 
+After performing all of the various types of regression methods, the lowest RMSE values that were able to be obtained was always around 8. None of the methods attempted were able to narrow the model even further in order to get a more accurate prediction of BMI. 
 
-Linear regression put our RMSE values in the range of *7.929959* to *9.08678*. Spline regression was worse and it left us with two values, those being: *8.540398* and *8.488051*. Lasso regression seemed to be the most consistent in getting us RMSE values under 8, no matter what variables were used to build the model. We resulted with RMSE of *7.968656* and *7.96817* across 3 Lasso regression tests. And finally with the ridge regression (whose analyses are not included in this paper for brevity) left us with RMSE values of *8.034446* and *8.793966*. 
+Linear regression gave RMSE values in the range of *7.929959* to *9.08678*. Spline regression produced worse results, with RMSE values of *8.540398* and *8.488051*. Lasso regression was the most consistent in producing RMSE values under 8, regardless of which variables were used to build the model. Across three Lasso regression tests, RMSE values of *7.96817*, *7.968656* , and *7.968656* were obtained. Finally, the models developed using ridge regression (whose analyses are not included in this paper for brevity) produced RMSE values of *8.034446* and *8.793966*. 
 
-This could be due to various reasons, one that came to mind is because of the synthetically generated data in this dataset. That generated data could have lead to inaccurate inputs which would hold us back from being able to accurately predict BMI of a person. Although the data generated was useful for filling in noticeable gaps, it has most likely lead to some sort of skew and/or bias in the dataset which prevents us from being able to get a more accurate prediction.
+A possible reason that the regression tests were not as successful as hoped is because of the synthetically generated data in the dataset. The generated data may have lead to less ideal, or possibly inaccurate inputs which if so could hinder the ability of the regression models from accurately predicting BMI. Although the data generated was useful for filling in noticeable gaps, it has most likely lead to possible skew and/or bias in the dataset.
 
-After all of these regression tests, we found out that the best method to obtaining the lowest RMSE value was Linear regression. The variables used with Linear regression and BMI that resulted in these low RMSE values were SMOKE, NCP, Gender and TUE, with SMOKE being the one that resulted in the lowest RMSE, *7.929959*.
-
-
+After performing these various regression tests, the best method for obtaining the lowest RMSE value was found to be Linear regression. The variables that resulted in the lowest RMSE values when used with Linear regression to predict BMI were *SMOKE*, *NCP*, *Gender* and *TUE*, with *SMOKE* being the one that resulted in the lowest RMSE value of *7.929959*.
 
 ## Classification
 
-In addition to predicting BMI levels, determining whether or not an individual is obese would be a powerful tool in health care to diagnose individuals early and prevent further disease. We now focus on developing classification models to determine whether or not an individual is obese based on various variables of our dataset.
+In addition to predicting BMI levels, determining whether or not an individual is obese would be a powerful tool in health care to diagnose individuals early and prevent further disease. The focus of this section will be on developing classification models to determine whether or not an individual is obese based on various variables of our dataset.
 
-### Pre-processing 
-The BMI values have been calculated for each individual and we will use those values to determine the true class values of if an individual is obese or not. Based on the CDC's definition of obese, an individual with a BMI level greater than 30 is considered obese [3]. We require these true class values on our dataset for the developing and testing of our models. Therefore we add the following variable to our dataset:
+## Pre-processing 
+
+The BMI values have been calculated for each individual and will be used to determine the true class values of if an individual is obese or not. Based on the CDC's definition of obese, an individual with a BMI level greater than 30 is considered obese [3]. These true class values on our dataset are required for the developing and testing of our models. Therefore, before proceeding further, the following variable was to the dataset:
 $$ Y = \begin{array}{cc}
   \Bigg\{ & 
     \begin{array}{cc}
@@ -354,7 +373,7 @@ $$ Y = \begin{array}{cc}
     \end{array}
 \end{array}$$
 
-We then remove the following variables: BMI, Height, Weight, and NObeyesdad from our training data. This is essential to the purpose behind building our models as our values of the target variable Y is directly calculated from BMI, which is a result of Height and Weight and gives the resulting NObeyesdad categories. Our objective is to discover relationships between obesity and the other variables present in the dataset so that an obesity prediction can be provided when height and weight are not available.
+The variables *BMI*, *Height*, *Weight*, and *NObeyesdad* were then removed from the training data. This is essential to the purpose behind building models as the values of the target variable Y is directly calculated from BMI, which is a result of Height and Weight and produces the resulting NObeyesdad categories. Therefore, because the objective is to discover relationships between obesity and the other variables present in the dataset, these variables must not be consider so that an obesity prediction can be provided when height and weight are not available.
 
 ```{r pre processing, warning=FALSE, message=FALSE}
 library(infer)
@@ -391,11 +410,9 @@ target = train$Y
 actual = test$Y
 ```
 
+When developing a model, it is important to initially create the model assuming that the training data comprises of the population. Therefore, only the training data is analyzed for feature selection. For feature selection in the classification models, filtering methods were performed. Filtering methods involve looking at the each feature of the dataset individually without considering its relationship with other covariates. Although this may overlook relationships between covariates such as multicollinearity, it is an effective and simple method. For each feature, the appropriate statistical test was performed to determine its relationship with the target variable $Y$. 
 
-
-When developing a model it is important to initially create the model assuming that the training data comprises our population, therefore, we analyze only the training data in our feature selection. For our feature selection in the classification models we will perform filtering methods. Filtering methods involve looking at the each feature of the dataset individually without considering its relationship with other covariates. Although this may overlook relationships between covariates such as multicollinearity, it is an effective and simple method. For each feature we perform the appropriate statistical test to determine its relationship with the target variable $Y$. 
-
-For the categorical variables, we use a **Pearson’s Chi-Squared Test of Independence**. The Chi-Squared test is designed to analyze the relationship between categorical variables. It is called a "goodness of fit" test because it measures how likely the observed distribution of values fits the distribution under the null hypothesis, which assumes the two variables are independent. 
+For the categorical variables, **Pearson’s Chi-Squared Test of Independence** was utilized. The Chi-Squared test is designed to analyze the relationship between categorical variables. It is called a "goodness of fit" test because it measures how likely the observed distribution of values fits the distribution under the null hypothesis, which assumes the two variables are independent. 
 
 ```{r Vars categorical selection, warning=FALSE}
 # chi-square test for categorical variables
@@ -414,12 +431,12 @@ categorical_table = categorical_table %>% mutate_if(is.numeric, funs(as.characte
 Variable = matrix(c("p-value"), nrow = 1)
 
 kable(cbind(Variable, categorical_table), 
-      caption = "\\label{tab1}P-values for Chi-Squared Test",
+      caption = "\\label{tab3}P-values for Chi-Squared Test",
       align = "c", longtable = TRUE)
 
 ```
 
-For the remaining variables, which are numerical, we will use a **Two-sided T-test**. The Two-sided T-test is a statistic test used for evaluating whether the means of two populations differ or not. Here the two populations are $Y = 0$, Non-obese individuals, and $Y = 1$, Obese individuals. For each numerical feature we will test whether their mean values within the two groups are significantly different.
+For the remaining variables, which are numerical, a **Two-sided T-test** was used. The Two-sided T-test is a statistic test used for evaluating whether the means of two populations differ or not. Here the two populations are $Y = 0$, Non-obese individuals, and $Y = 1$, Obese individuals. For each numerical feature it was tested whether their mean values within the two groups are significantly different.
 
 ```{r, vars numerical} 
 
@@ -433,7 +450,7 @@ numerical_table = tibble(Age = t_test(train, Age ~ Y)$p_value,
 
 numerical_table = numerical_table %>% mutate_if(is.numeric, funs(as.character(signif(., 3))))
 
-kable(cbind(Variable, numerical_table), caption = "\\label{tab2}P-values for T-test",
+kable(cbind(Variable, numerical_table), caption = "\\label{tab4}P-values for T-test",
       align = "c", longtable = TRUE)
 
 
@@ -442,16 +459,16 @@ train = train %>% dplyr::select(-Gender, -SMOKE, -NCP)
 test = test %>% dplyr::select(-Gender, -SMOKE, -NCP)
 
 ```
-From the Table \ref{tab1} we see that all but two categorical variables have a resulting p-value less than 0.01 from the Chi-Squared tests. Therefore we fail to reject the null hypotheses for both Gender and SMOKE at a 1% significance level. We have insufficient evidence that obesity is dependent of Gender and also SMOKE. From the results in Table \ref{tab2} we see that only NCP has a p-value greater than 0.01. Therefore, for all numerical variables but NCP we reject the null hypothesis at a 1% significance level. In NCP test, we fail to reject the null hypothesis and conclude that we have insufficient evidence that the mean NCP differs between the obese and non-obese groups. From these results, we will not include the following three variables in the development of our models: Gender, SMOKE, and NCP.
+From the Table \ref{tab3}, it can be observed that all but two categorical variables have a resulting p-value less than 0.01 from the Chi-Squared tests. Therefore the null hypotheses fails to be rejected for both *Gender* and *SMOKE* at a 1% significance level. There is insufficient evidence that obesity is dependent of *Gender* and also *SMOKE*. From the results in Table \ref{tab4}, it can be observed that only *NCP* has a p-value greater than 0.01. Therefore, for all numerical variables but *NCP*, the null hypothesis is rejected at a 1% significance level. In the *NCP* test, the null hypotheses fails to be rejected and it is concluded that we have insufficient evidence that the mean *NCP* differs between the obese and non-obese groups. From these results, the following three variables *Gender*, *SMOKE*, and *NCP* will not be included in the development of the next models.
 
+Now that the features to build our model have been selected, they will be used to predict the target class, which is the binary variable $Y$ indicating if an individual is obese. There are many different classification models, but in this report, the focus will be on logistic regression, nearest neighbors, and decision trees.
 
-Now that we have our selected features to build our model, we will use them to predict our target class, the binary variable Y indicating if an individual is obese. There are many different classification models, but in this report, we focus on logistic regression, nearest neighbors, and decision trees.
 
 ### Logistic Regression
 
-Logistic regression is a regression model that can be turned into a classification model. This is done through the logit function which takes probabilities between 0 and 1 and transforms them to any real number. The result of this is a model that when given values of covariates, it produces a probability that can be compared to a threshold to determine what binary class that observation is to be labelled. This is particularly useful in our desired model as our target variable $Y$ is binary. Therefore, a logistic model could be used to predict the value of Y, that is, predict whether or not that individual is obese given the values of covariates. However, Logistic regression uses the regression equation and therefore requires assumptions about the data to be satisfied. These assumptions include : linearity of the logit, independence of errors, absence of multicollinearity, lack of overdispersion,  and adequacy of the model. For simplicity we will assume these properties are satisfied for our dataset.
+Logistic regression is a regression model that can be turned into a classification model. This is done through the logit function which takes probabilities between 0 and 1 and transforms them to any real number. The result of this is a model that when given values of covariates, it produces a probability that can be compared to a threshold to determine what binary class that observation is to be labelled. This is particularly useful for the desired model as the target variable $Y$ is binary. Therefore, a logistic model could be used to predict the value of $Y$, that is, predict whether or not that individual is obese given the values of covariates. However, Logistic regression uses the regression equation and therefore requires assumptions about the data to be satisfied. These assumptions include : linearity of the logit, independence of errors, absence of multicollinearity, lack of overdispersion,  and adequacy of the model. For simplicity these properties were assumed to be satisfied for the dataset.
 
-We created a logistic model using all features of our data set and it resulted in an accuracy of 0.755 when tested on the testing data. To improve our model we explore regularized regression through Lasso regression. However, since our data does not have a large number of features compared to the 2111 total number of observations, and as noted early there are no signs of multicollinearity, we do not expect to see a big improvement in our results. This is exactly what we found when creating a Lasso Logistic regression model. The accuracy of the model did not differ from our original Logistic model. Since Lasso can be used for variable selection we examine the coefficients of all the features created by this model. We find that the category 'no' from CALC variable and the category 'Bike' from MTRANS are the two coefficients that have gone to zero. This suggests that these two values of these covariates do not have a significant impact on the expected value of the outcome variable $Y$. We also observe that the category 'yes' from the variable family_history_with_overweight has the largest coefficient absolute value, indicating that it significantly impacts the expected value of indicating obesity.
+The first classification model created was a logistic model using all features of our data set. It resulted in an accuracy of 0.755 when tested on the testing data. To improve the model, regularized regression through Lasso regression was explored. However, since the dataset does not have a large number of features compared to the 2111 total number of observations, and as noted in the regression section of this report there are no signs of multicollinearity, there was not an expectation to see a big improvement in the previous results. This is exactly what was found when creating a Lasso Logistic regression model. The accuracy of the model did not differ from our original Logistic model. Since Lasso can be used for variable selection we examine the coefficients of all the features created by this model. It was found that the category 'no' from the *CALC* variable and the category 'Bike' from the *MTRANS* variable are the two coefficients that have gone to zero. This suggests that these two values of these covariates do not have a significant impact on the expected value of the outcome variable $Y$. It was also observed that the category 'yes' from the variable *family_history_with_overweight* has the largest coefficient absolute value, indicating that it significantly impacts the expected value of indicating obesity.
 
 
 ```{r logistic, warning=FALSE}
@@ -495,11 +512,12 @@ lasso_model = glmnet(X, y, alpha = 1, family = "binomial", lambda = min_lambda)
 
 ```
 
+
 ### Nearest Neighbors
 
-While some classification models require assumptions, other models such as Nearest Neighbors do not make any assumptions about the structure of the data. Nearest Neighbors is a simple model that involves determining the class of an observation based on the class of the observations that surround it. Typically, the Euclidean distance is the measure used to calculate the distance between two observations base on values of their features. Since distance is calculated between the covariate values, it becomes clear that the covariates must be numeric. In our training data we have 8 categorical variables that we will exclude them from this model. Therefore we will only consider the 5 numerical features that were selected: AGE, FCVC, CH2O, FAF, adn TUE. However, there are techniques to convert categorical variables to numeric while keeping there relationship consistent and this should be explored in future analysis for improving our models. The class of a given observation is then determined by considering what the majority class of the K observations that are closest. K is a hyper-parameter of the model that determines how many nearest neighbors to consider when classifying a given observation.
+While some classification models require assumptions, other models such as Nearest Neighbors do not make any assumptions about the structure of the data. Nearest Neighbors is a simple model that involves determining the class of an observation based on the class of the observations that surround it. Typically, the Euclidean distance is the measure used to calculate the distance between two observations base on values of their features. Since distance is calculated between the covariate values, it becomes clear that the covariates must be numeric. In the training dataset, there are 8 categorical variables that we will exclude them from this model. Therefore only the 5 numerical features were selected: Those variables were *AGE*, *FCVC*, *CH2O*, *FAF*, and *TUE*. However, there are techniques to convert categorical variables to numeric while keeping there relationship consistent and this should be explored in future analysis for improving these models. The class of a given observation is then determined by considering what the majority class is between the K-number of observations that are closest. K is a hyper-parameter of the model that determines how many nearest neighbors to consider when classifying a given observation.
 
-Determining the value of K is specific to the data at hand and there is not a single value of K that will work best all of the time. Hence, we will calculate multiple models and compare them to determine the optimal value of K. We proceed by creating models with the following values of K, $K = \{1, 3, ..., 101\}$. It is important to note that we are only considering odd values for K. This is because we have a binary classification, so if K were even then the majority class between its K nearest neighbors could result in a tie and we would be unable to directly choose a class for that observation. In comparing the models numerically for each of the different K values we evaluate each one by considering appropriate metrics such as Accuracy and Area Under the Curve (AUC).
+Determining the value of K is specific to the data at hand and there is not a single value of K that will work best all of the time. Hence, multiple models were calculated and compared to determine the optimal value of K. To achieve this, multiple models were created using the following values of K, $K = \{1, 3, ..., 101\}$. It is important to note that only odd values for K were considered. This is because we have a binary classification, so if K were even then the majority class between its K nearest neighbors could result in a tie and directly choosing a class for that observation would not be possible. To compare the models numerically for each of the different K values, each one was evaluated by considering appropriate metrics such as Accuracy and Area Under the Curve (AUC).
 
 
 ```{r knn, warning=FALSE}
@@ -564,15 +582,16 @@ accuracy_knn = mean(pred_class == actual)
 
 ```
 
+
 ### Decision Tree
 
-Nearest Neighbors is flexible as there are not assumptions but it is not the most interpretable as it is difficult to tell which features are the most important in determining the resulting class. Like Nearest Neighbors, Decision trees are another classification model that are flexible and do not make assumptions about the data. The main advantage of decision trees is its easy interpretation. Decision trees are known as universal approximators as it is easy to use them to create a model with perfect classification. However, it is important to consider and evaluate the bias-variance trade-off when consider the size and depth of the tree to avoid perfect classification model that overfit the data. 
+Nearest Neighbors is flexible as there are not assumptions, but it is not the most interpretable as it is difficult to tell which features are the most important in determining the resulting class. Like Nearest Neighbors, Decision trees are another classification model that are flexible and do not make assumptions about the data. The main advantage of decision trees is their ease of interpretation. Decision trees are known as universal approximators because they are easy to use when trying to create a model with perfect classification. However, it is important to consider and evaluate the bias-variance trade-off when considering the size and depth of the tree to avoid a perfect classification model that overfits the data. 
 
-We use all of the selected categorical and numerical variables in the development of the decision tree. From this tree we see that the root node consists of the variable family_history_with_overweight. We will assume that the `ctree()` function from the 'party' package selects the predicate at each node that maximizes the drop in entropy. This drop in entropy cant be quantified by the *Information Gain* of a predicate. This tells use that the predicate for if an individual has history of overweight family maximizes the information gain out of all possible predicates. Since this variable is binary (yes/no), it tells use that this feature does the best job at segregating individuals so that the entropy of the child nodes is minimized based on the classification of obese and non-obese.
+All of the selected categorical and numerical variables were used in the development of the decision tree. From this tree it can be seen that the root node consists of the variable *family_history_with_overweight*. It was assumed that the `ctree()` function from the 'party' package selects the predicate at each node that maximizes the drop in entropy. This drop in entropy can be quantified by the *Information Gain* of a predicate. This means that the predicate for 'if an individual has history of overweight family' maximizes the information gain out of all possible predicates. Since this variable is binary (yes/no response), it means that this feature does the best job at segregating individuals so that the entropy of the child nodes is minimized based on the classification of obese and non-obese.
 
-Large trees can lead to overfitting and small trees can lead to underfitting so it is sometimes difficult to manually determine the best depth of the tree to minimize these risks while balancing the bias and variance. One strategy that addresses this issue is bagging. Bagging on decision trees involves creating bootstrap samples, that is sampling from the training data with replacement, and then building trees for each bootstrap sample. **Random Forests** are a classification model that utilizes bagging combined with random subspaces to improve the accuracy of decision trees. For each iteration a random selection of the features is performed so that each tree is not highly correlated. Random forests then combine characteristics of the resulting trees to produce a final model.
+Because large trees can lead to overfitting and small trees can lead to underfitting, it is sometimes difficult to manually determine the best depth of the tree to minimize these risks while balancing the bias and variance. One strategy that addresses this issue is bagging. Bagging on decision trees involves creating bootstrap samples, that is sampling from the training data with replacement, and then building trees for each bootstrap sample. **Random Forests** are a classification model that utilizes bagging combined with random subspaces to improve the accuracy of decision trees. For each iteration, a random selection of the features is performed so that each tree is not highly correlated. Random forests then combine characteristics of the resulting trees to produce a final model.
 
-We created a Random Forest model on our training dataset in attempt to improve our original decision tree performance. Table \ref{tab3} and Table \ref{ta43} display the resulting confusion matrices when we applied these two models to our training data.
+In an attempt to improve the original decision tree's performance, a Random Forest model using our training dataset was created. Table \ref{tab5} and Table \ref{tab6} display the resulting confusion matrices when we applied these two models to our training data.
 
 ```{r tree, warning=FALSE}
 # normal decision tree
@@ -604,10 +623,10 @@ table_rf = table(actual, pred_rf)
 ```
 
 ```{r confusion matrix, warning=FALSE}
-kable(table_t, align = "clc", caption = "\\label{tab3}Decision Tree Confusion Matrix") %>% 
+kable(table_t, align = "clc", caption = "\\label{tab5}Decision Tree Confusion Matrix") %>% 
   kable_styling(full_width = F)
 
-kable(table_rf, align = "clc", caption = "\\label{tab4}Random Forest Confusion Matrix") %>% 
+kable(table_rf, align = "clc", caption = "\\label{tab6}Random Forest Confusion Matrix") %>% 
   kable_styling(full_width = F)
 
 # c("Decision Tree", "Decision Tree", "Random Forest", "Random Forest")
@@ -616,19 +635,19 @@ kable(table_rf, align = "clc", caption = "\\label{tab4}Random Forest Confusion M
 
 ### Results 
 
-There are various numerical measures of classification models including accuracy, precision, and recall. When deciding on the most effective measure it is important to consider if our dataset is balanced. Since the target variable $Y$ is divided into two classes of obese and non-obese which have proportions `r round(prop_y1,2)` and `r round(prop_y0,2)`, respectively, we can say that the binary class of obesity has a balanced population. Therefore accuracy is an appropriate measure of our classification models. In our analysis we will compare the following four models that we developed: the original Logistic model, the nearest neighbors model with the optimal K value, the basic decision tree, and the random forest model. Table \ref{tab5} is a table containing the accuracy results from applying each model to the test data.
+There are various numerical measures of classification models including accuracy, precision, and recall. When deciding on the most effective measure it is important to consider if our dataset is balanced. Since the target variable $Y$ is divided into two classes of obese and non-obese, which have proportions `r round(prop_y1,2)` and `r round(prop_y0,2)`, respectively, the binary class of obesity has a relatively balanced population. Therefore accuracy is an appropriate measure of the classification models that were developed. In the following analysis, the following four models that were developed will be compared: the original Logistic model, the nearest neighbors model with the optimal K value, the basic decision tree, and the random forest model. Table \ref{tab7} is a table containing the accuracy results from applying each model to the test data.
 
 ```{r accuracy, warning=FALSE}
 
 kable(matrix(c(accuracy_l, accuracy_knn, accuracy_t, accuracy_rf), ncol = 4),
-      caption = "\\label{tab5}Accuracy of Models",
+      caption = "\\label{tab7}Accuracy of Models",
       align = "c", col.names = c("Logistic Regression", "Nearest Neighbors", 
                      "Decision tree", "Random Forest"),
       digits = 3) 
 
 ```
 
-There are also other visual measures to evaluate the performance of classification models such as the Receiver Operating Characteristic (ROC) curve and the Precision-Recall curve. Since our data is balanced we will plot the ROC curve for our various models to compare their effectiveness. The ROC curve plots the true positive rate against the false positive rate for values of t between 0 and 1, where t is the probability threshold that determines the outcome class for that individual. When looking at the resulting line for a model, the closer the line goes towards the top left corner of the unit square, the better the model. As a result of this we can quantify the models performance by the Area Under the Curve (AUC) which directly calculates the area under the line within the unit square. An AUC value of 1 would be the result of a perfect classification model, while values from 0.8-0.9 represent an excellent model. We want to see the AUC value of a model greater than 0.5, otherwise it suggests that we could get a better performance by swapping the binary classes within the model. The following figure displays the ROC curve for all four of our models.
+There are also other visual measures to evaluate the performance of classification models such as the Receiver Operating Characteristic (ROC) curve and the Precision-Recall curve. Since the data is balanced, a plot of the ROC curve for the various models was created to compare their effectiveness. The ROC curve plots the true positive rate against the false positive rate for values of t between 0 and 1, where t is the probability threshold that determines the outcome class for that individual. When looking at the resulting line for a model, the closer the line goes towards the top left corner of the unit square, the better the model. As a result of this, the models' performances can quantified by the Area Under the Curve (AUC) which directly calculates the area under the line within the unit square. An AUC value of 1 would be the result of a perfect classification model, while values from 0.8-0.9 represent an excellent model. An AUC value of a model that is at least greater than 0.5 is desired, otherwise it suggests that a better performance could be achieved by swapping the binary classes within the model. The following figure displays the ROC curve for all four of the models.
 
 \vspace{12pt}
 
@@ -673,22 +692,25 @@ table_auc = table_auc %>% dplyr::select(-.metric, -.estimator) %>%
               values_from  = .estimate)
 Model = matrix(c("AUC"), nrow = 1)
 
-kable(cbind(Model, table_auc), caption = "\\label{tab6}Area Under the Curve for ROC",
+kable(cbind(Model, table_auc), caption = "\\label{tab8}Area Under the Curve for ROC",
       align = "c", longtable = TRUE,
       digits = 3)
 
 ```
 
 
-From the plot, we see that the nearest neighbor model had the worst performance with an AUC of *0.527*. This is insightful as the nearest neighbor classification was trained only using the numerical features, which suggests that the categorical variables play a strong role in predicting obesity. The logistic regression model involving all features has an AUC of *0.863*, performing much better than nearest neighbors but not nearly as strong as the decision tree model and the random forest model which had AUC values of *0.899* and *0.952*, respectively. The weaker performance of the logistic model may be a result of certain assumptions that were not satisfied, such as the relationship between the features and the log-odds of the target variable being non-linear. The ROC curve and AUC values makes it clear that the random forest classification model has the best capability of predicting obesity in individuals.
+From the plot, it can be observed that the nearest neighbor model had the worst performance with an AUC of *0.527*. This is insightful as the nearest neighbor classification was trained only using the numerical features, which suggests that the categorical variables play a strong role in predicting obesity. The logistic regression model involving all features had an AUC of *0.863*, performing much better than nearest neighbors but not nearly as strong as the decision tree and random forest models, which had AUC values of *0.899* and *0.952*, respectively. The weaker performance of the logistic model may be a result of certain assumptions that were not satisfied, such as the relationship between the features and the log-odds of the target variable being non-linear. The ROC curve and AUC values make it clear that the random forest classification model has the best capability of predicting obesity in individuals.
 
-In the variable selection for our classification models, we determined through statistical testing that obesity is likely not dependent on the following variables: Gender, SMOKE, and NCP. Furthermore, from developing the these classification models, we discovered from the logistic regression coefficients and from the chosen root predicate of the decision tree that the variable family_history_with_overweight has a significant role in predicting the obesity of an individual. 
+In the variable selection for the classification models, it was determined through statistical testing that obesity is likely not dependent on the variables *Gender*, *SMOKE*, and *NCP*. Furthermore, from developing these classification models, it was discovered that the variable *family_history_with_overweight* has a significant role in predicting the obesity of an individual, observed from the logistic regression coefficients and from the chosen root predicate of the decision tree. 
 
 
 # Conclusion
 
-In conclusion, this report explored possible relationships between obesity and characteristics/behaviours of individuals. Using regression, we searched for the best model to predict BMI levels directly. However, we were unable to reduce the error in the models significantly. This indicates that available variables may not be the best for predicting the BMI of individuals and that other variables should be explored. We then explored classification models to predict the binary outcome of whether or not an individual is obese. We used the following three main methods in developing models: logistic regression, nearest neighbors, and decision trees. The model that had the best performance was the decision tree model, which produced excellent capabilities in predicting whether or not an individual was obese.
-This model could be used as a tool to predict obesity in situations when weight and height are not available. In screening patient data without weight and height the ability to diagnose someone with obesity allows the early initiation of health protocols to prevent the obesity associated diseases from developing in individuals. 
+In conclusion, this report explored possible relationships between obesity and different characteristics/behaviours of individuals. Using regression, a model to predict BMI levels directly was searched for. The regression methods used were linear regression, spline regression, lasso regression, and ridge regression. Out of the regression methods used, linear regression produced the best RMSE values, with the best one using the variable *SMOKE* with an RMSE value of *7.929959*. However, since the error in the models were not significantly reduced in a meaningful way, we conclude that the available variables may not be the best for predicting the BMI of individuals and that other variables should be explored.
+
+After regression models were explored, classification models were then used to predict the binary outcome of whether or not an individual is obese. The three methods used in developing models were logistic regression, nearest neighbors, and decision trees. The model that had the best performance was the decision tree model, which produced excellent capabilities in predicting whether or not an individual was obese, with an Area Under the Curve (AUC) value of *0.899*. The decision tree model was able to be improved even further using the random forests technique, which improved the AUC value of the model to *0.952*.
+
+Importantly, this model can be used as a tool to predict obesity in situations when weight and height are not available. In particular, in a situation where patient characteristics/behaviour data is available but not their weight and height, this model can give the ability to still diagnose someone with obesity. This diagnosis allows the early initiation of health protocols to prevent the obesity associated diseases from developing in individuals, which is very helpful in improving the health of affected individuals. 
 
 
 ## References
