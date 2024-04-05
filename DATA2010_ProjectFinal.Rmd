@@ -376,7 +376,7 @@ $$ Y = \begin{array}{cc}
     \end{array}
 \end{array}$$
 
-The variables *BMI*, *Height*, *Weight*, and *NObeyesdad* were then removed from the training data. This is essential to the purpose behind building models as the values of the target variable Y is directly calculated from BMI, which is a result of Height and Weight and produces the resulting NObeyesdad categories. Therefore, because the objective is to discover relationships between obesity and the other variables present in the dataset, these variables must not be consider so that an obesity prediction can be provided when height and weight are not available.
+The variables *BMI*, *Height*, *Weight*, and *NObeyesdad* were then removed from the training data. This is essential to the purpose behind building models as the values of the target variable Y is directly calculated from BMI, which is a result of Height and Weight and produces the resulting NObeyesdad categories. Therefore, because the objective is to discover relationships between obesity and the other variables present in the dataset, these variables must not be considered so that an obesity prediction can be provided when height and weight are not available.
 
 ```{r pre processing, warning=FALSE, message=FALSE}
 library(infer)
