@@ -43,23 +43,24 @@ In our regression and classification models we use the same training and testing
 The variables from the study that were considered in our models were as follows:
 ```{r dataset variables table}
 library(kableExtra)
-v = matrix(ncol = 4, nrow = 15)
-v[1,] = c("Variable", "Variable Name", "Variable Type", "Variable Response")
-v[2,] = c("Smoke", "SMOKE", "Binary", "Yes / No")
-v[3,] = c("Number of main meals", "NCP", "Categorical", "Between 1 and 2 / 3 / More than 3")
-v[4,] = c("Gender", "Gender", "Binary", "Male / Female")
-v[5,] = c("Time using electronics", "TUE", "Numerical", "0-2 hours / 3-5 hours / More than 5 hours daily")
-v[6,] = c("Consumption of water","CH20", "Numerical", "Less than a liter / Between 1 and 2 liters / More than 2 liters daily")
-v[7,] = c("Transportation used", "MTRANS", "Categorical", "Automobile / Motorbike / Bike / Public transportation / Walking")
-v[8,] = c("Calorie consumption monitoring", "SCC", "Binary", "Yes / No")
-v[9,] = c("Freq of physical activity", "FAF", "Numerical", "I do not have / 1 or 2 days / 2 or 4 days / 4 or 5 days a week")
-v[10,] = c("Freq of Consumption of alcohol", "CALC", "Categorical", "I do not drink / Sometimes / Frequently / Always")
-v[11,] = c("Freq consumption of high caloric food", "FAVC", "Binary", "Yes / No")
-v[12,] = c("Freq consumption of vegetables", "FCVC", "Categorical", "Never / Sometimes / Always")
-v[13,] = c("Age", "Age", "Numerical", "Numeric value for age")
-v[14,] = c("Consumption of food between meals", "CAEC", "Categorical", "No / Sometimes / Frequently / Always")
-v[15,] = c("History of overweight", "family_history_with_overweight", "Binary", "Yes / No")
-kbl(v, align = "c", caption = "\\label{tab1}Dataset Variables", booktabs = T) %>%
+v = matrix(ncol = 4, nrow = 14)
+v[1,] = c("Smoke", "SMOKE", "Binary", "Yes / No")
+v[2,] = c("Number of main meals", "NCP", "Categorical", "Between 1 and 2 / 3 / More than 3")
+v[3,] = c("Gender", "Gender", "Binary", "Male / Female")
+v[4,] = c("Time using electronics", "TUE", "Numerical", "0-2 hours / 3-5 hours / More than 5 hours daily")
+v[5,] = c("Consumption of water","CH20", "Numerical", "Less than a liter / Between 1 and 2 liters / More than 2 liters daily")
+v[6,] = c("Transportation used", "MTRANS", "Categorical", "Automobile / Motorbike / Bike / Public transportation / Walking")
+v[7,] = c("Calorie consumption monitoring", "SCC", "Binary", "Yes / No")
+v[8,] = c("Freq of physical activity", "FAF", "Numerical", "I do not have / 1 or 2 days / 2 or 4 days / 4 or 5 days a week")
+v[9,] = c("Freq of Consumption of alcohol", "CALC", "Categorical", "I do not drink / Sometimes / Frequently / Always")
+v[10,] = c("Freq consumption of high caloric food", "FAVC", "Binary", "Yes / No")
+v[11,] = c("Freq consumption of vegetables", "FCVC", "Categorical", "Never / Sometimes / Always")
+v[12,] = c("Age", "Age", "Numerical", "Numeric value for age")
+v[13,] = c("Consumption of food between meals", "CAEC", "Categorical", "No / Sometimes / Frequently / Always")
+v[14,] = c("History of overweight", "family_history_with_overweight", "Binary", "Yes / No")
+
+kbl(v, col.names = c("Variable", "Variable Name", "Variable Type", "Variable Response"), align = "c", 
+    caption = "\\label{tab1}Dataset Variables", booktabs = T) %>%
   kable_styling(latex_options = c("striped", "scale_down", "HOLD_position"))
 ```
 
@@ -115,16 +116,6 @@ Variable = matrix(c("Correlation"), nrow = 1)
 kable(cbind(Variable, table), align = "c", longtable = TRUE, caption = "\\label{tab2}Correlation")
 ```
 
-Next, evidence of multicollinearity was checked for. A correlation matrix was created and checked to see if there was any values close enough to 1 or -1 to be considered evidence of multicollinearity. The results showed that there were no values close enough to consider the dataset as having evidence of multicollinearity, as can be found below. 
-
-```{r}
-# Checking for multicollinearity
-double_vars = sapply(dataset, function(x) is.numeric(x) && !all(x %% 1 == 0))
-double_data = trainData[, double_vars]
-corMatrix = cor(double_data)
-abs(corMatrix)
-```
-
 ```{r, fig.width=10, fig.height=8, out.width='50%', out.height='50%'}
 # Lets graph the regression models
 
@@ -145,6 +136,16 @@ trainData |>
   geom_line(aes(y = fitted),
             colour = "red", linewidth = 1) +
   ggtitle("Relationship between TUE and BMI")
+```
+
+Next, evidence of multicollinearity was checked for. A correlation matrix was created and checked to see if there was any values close enough to 1 or -1 to be considered evidence of multicollinearity. The results showed that there were no values close enough to consider the dataset as having evidence of multicollinearity, as can be found below. 
+
+```{r}
+# Checking for multicollinearity
+double_vars = sapply(dataset, function(x) is.numeric(x) && !all(x %% 1 == 0))
+double_data = trainData[, double_vars]
+corMatrix = cor(double_data)
+abs(corMatrix)
 ```
 
 In order to determine which variables in the dataset are the most valuable in predicting *BMI*, linear regression models were created using each variable available, with the exception of height and weight, which were used directly for calculating BMI, as well as obesity level category, which was categorized directly from *BMI*. Prior to making the models, the categorical variables in the dataset were factorized to allow them to be used in the model. 
