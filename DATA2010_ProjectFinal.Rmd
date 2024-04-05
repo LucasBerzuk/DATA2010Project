@@ -26,7 +26,7 @@ There are many different tools for measuring obesity levels, some of which inclu
 
 In this paper, different statistical models were created that attempt to predict obesity levels based on variables other than height and weight. These models were trained and tested using data obtained from a study conducted at Coast University in Colombia [1]. The data includes 17 different attributes regarding an individual's lifestyle choices and patterns. This study will be explained in greater depth in the following "Data Analysis" section. 
 
-Using data analysis, it was found that the following variables were the most valuable in evaluating an individual's risk of obesity: *insert the variables used*. Various regression models were built using BMI as the target variable and the rest of the variables in the data set as the predictor variables to determine which ones are the most valuable in predicting obesity. In doing so, an individual's risk of obesity is able to be predicted using information about their lifestyle. The regression methods used to create these models were Linear, Lasso, and Ridge regression. Root mean squared error (RMSE) was calculated for each model as a means of comparing which model had the greatest prediction ability. 
+Using data analysis, it was found that the following variables are the most valuable in evaluating an individual's risk of obesity: *insert the variables used*. Various regression models were built using BMI as the target variable and the rest of the variables in the data set as the predictor variables to determine which ones are the most valuable in predicting obesity. In doing so, an individual's risk of obesity is able to be predicted using information about their lifestyle. The regression methods used to create these models were Linear, Spline, Lasso, and Ridge regression. Root mean squared error (RMSE) was calculated for each model as a means of comparing which model had the greatest prediction ability. 
 
 //**TODO**
 To complement the various regression models, classification models were built using the same data. The classification methods used to create these models were *insert methods*. *...*
@@ -64,7 +64,9 @@ testData = dataset[-row.number, ]
 BMI = trainData$Weight / (trainData$Height ^2)
 ```
 
-We decide to model many forms of regression on our data to calculate RMSE and see how far off predicted values would be from observed values for this obesity dataset. We first started off by performing standard Linear regression with BMI where $BMI = \frac{weight}{height^2}$, on every variable that was in the dataset (aside from height and weight because that is what is used in BMI). For the categorical variables we had to factor them before performing regression because otherwise we would not be able to test them. These are the RMSE values that we found for every variable in the dataset.
+To ensure that the most effective regression method was used, many different methods were utilized and subsequently compared using their RSME values. These methods were Linear, Spline, Lasso, and Ridge regression.
+First, in order to determine which variables in the dataset are the most valuable in predicting BMI, linear regression models were created using each variable available, with the exception of height and weight, which were used directly for calculating BMI, as well as obesity level category, which was categorized directly from BMI. Prior to making the models, the categorical variables in the dataset were factorized to allow them to be used in the model. 
+The following list presents the 14 variables that were considered alongside their respective linear regression model's RSME values in order from least to greatest:
 
 ```{r}
 # Performing regression on every variable with BMI
@@ -139,10 +141,10 @@ m = lm(BMI ~ MTRANS, data = trainData)
 p = predict(m, newdata = testData)
 rmse14 = sqrt(mean((BMI - p)^2))
 
-cat("Gender =", rmse1, "\nAge =", rmse2, "\nHistory of overweight =", rmse3, "\nFreq consumption of high caloric food =", rmse4, "\nFreq consumption of vegetables =", rmse5, "\nNumber of main meals =", rmse6, "\nConsumption of food between meals =", rmse7, "\nSmoke =", rmse8, "\nConsumption of water =", rmse9, "\nCalorie consumption monitoring =", rmse10, "\nFreq of physical activity =", rmse11, "\nTime using electronics =", rmse12, "\nConsumption of alcohol =", rmse13, "\nTransportation used =", rmse14)
+cat("\nSmoke =", rmse8, "\nNumber of main meals =", rmse6, "Gender =", rmse1, "\nTime using electronics =", rmse12, "\nConsumption of water =", rmse9, "\nTransportation used =", rmse14, "\nCalorie consumption monitoring =", rmse10, "\nFreq of physical activity =", rmse11, "\nConsumption of alcohol =", rmse13, "\nFreq consumption of high caloric food =", rmse4, "\nFreq consumption of vegetables =", rmse5, "\nAge =", rmse2, "\nConsumption of food between meals =", rmse7, "\nHistory of overweight =", rmse3)
 ```
 
-Noticing that *Number of main meals* and *Time using electronics* were the variables that lead to the lowest RMSE values (under 8), and were numeric. We decided to graph these variables with for visual input. Here are those graphs.
+Noticing that *Number of main meals (NCP)* and *Time using electronics (TUE)* were the variables that lead to the lowest RMSE values (under 8), and were numeric. We decided to graph these variables with for visual input. Here are those graphs.
 
 ```{r, fig.width=10, fig.height=8, out.width='50%', out.height='50%'}
 # Lets graph the regression models
