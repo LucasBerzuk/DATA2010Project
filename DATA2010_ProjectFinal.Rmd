@@ -16,9 +16,9 @@ April 5, 2024
 
 \end{center} 
 
-## Introduction
+# Introduction
 
-### Abstract
+## Abstract
 
 Obesity is a chronic disease that is defined by having an excessive amount of body fat. It increases the risk of other diseases and health problems including heart disease, high blood pressure, diabetes and certain cancers. In recent years, many first world countries are experiencing an epidemic of obesity, including Canada. In 2003, it was reported that Canadian adults had a 30% obesity rate, which was an increase from the 21% reported in 2003 [2]. In order to reverse this trend, it is necessary to be able to diagnose obesity early on for those at risk so that they can be provided with preventative therapies to decrease body fat percentage. To be able to diagnose early obesity we must first have a method of measuring levels of obesity.
 
@@ -30,15 +30,15 @@ Using data analysis, it was found that the following variables are the most valu
 
 To complement the various regression models, classification models were built using the same data. These models perform a binary classification predicting whether or not an individual is obese. We performed a filtering variable selection to determine the features that would be used in training the models. The classification methods used to create these models include logistic regression, nearest neighbors, and decisions trees. For each of these models, techniques were then applied in attempts in improve the models ability to predict obesity. The resulting models are then analyzed by classification metrics such as accuracy and the Receiver Operating Characteristic (ROC) curve to determine the best model.
 
-### Data Analysis
+## Data Analysis
 
 The data used as the basis for this paper comes from a study performed in Mexico, Peru and Colombia. It has 17 attributes and 2111 data points. The 17 attributes comprise 4 different variable types: 6 continuous, 2 ordinal, 5 categorical, and 4 binary. This data consists of an individual's behavioural patterns such as eating habits and physical condition, as well as their level of obesity. It is important to note that up to 77% of this data has been synthetically generated because of a greatly unbalanced number of samples between the different obesity categories in the sample data. The balancing was performed using the SMOTE filter with the Weka tool. The purpose was to create data points within the obesity categories with lower counts. This lead to an overall data set with uniform counts for the different obesity levels. The data was collected through a voluntary online survey that had 16 questions with a variety of responses. It was accessible for 30 days for users to complete. The researchers of this study calculated Body Mass Index using the equation $BMI = \frac{weight}{height^2}$ to determine the BMI of every respondent. The BMI values were then placed into different obesity level categories based on the World Health Organization and Mexican Normativity.
 
 In our regression and classification models we use the same training and testing data. To do this we split our data up so that 70% of the original data will be used as the training data and the other 30% will be used to test our models. We first check our data set for missing values and find that there are no missing entries. We then convert all categorical variables to factored variables with levels so that we can involve them in our models. BMI levels are not present in the given dataset so we directly use height and weight with the above formula to add BMI values for each individual to our dataset.
 
 
-## Methods
-### Regression
+# Methods
+## Regression
 ```{r}
 # Setup Code Chunk
 # Add any libraries etc used here.
@@ -328,9 +328,7 @@ abs(corMatrix)
 As we can see, there is nothing close enough to prove this so we state that there is no multicollinearity in this dataset.
 
 
-## Results
-// **TODO**
-- Restate results from the methods section, talk about what they mean and why they happened
+### Results
 
 After performing all of our regression testing, we saw that the lowest RMSE values we were able to obtain through various methods of regression was always around 8. There was no method that we could find that would allow us to narrow the model even further in order to get a more accurate prediction of BMI. 
 
@@ -338,14 +336,15 @@ Linear regression put our RMSE values in the range of *7.929959* to *9.08678*. S
 
 This could be due to various reasons, one that came to mind is because of the synthetically generated data in this dataset. That generated data could have lead to inaccurate inputs which would hold us back from being able to accurately predict BMI of a person. Although the data generated was useful for filling in noticeable gaps, it has most likely lead to some sort of skew and/or bias in the dataset which prevents us from being able to get a more accurate prediction.
 
+After all of these regression tests, we found out that the best method to obtaining the lowest RMSE value was Linear regression. The variables used with Linear regression and BMI that resulted in these low RMSE values were SMOKE, NCP, Gender and TUE, with SMOKE being the one that resulted in the lowest RMSE, *7.929959*.
 
 
 
-# Classification
+## Classification
 
 In addition to predicting BMI levels, determining whether or not an individual is obese would be a powerful tool in health care to diagnose individuals early and prevent further disease. We now focus on developing classification models to determine whether or not an individual is obese based on various variables of our dataset.
 
-## Pre-processing 
+### Pre-processing 
 The BMI values have been calculated for each individual and we will use those values to determine the true class values of if an individual is obese or not. Based on the CDC's definition of obese, an individual with a BMI level greater than 30 is considered obese [3]. We require these true class values on our dataset for the developing and testing of our models. Therefore we add the following variable to our dataset:
 $$ Y = \begin{array}{cc}
   \Bigg\{ & 
@@ -448,7 +447,7 @@ From the Table \ref{tab1} we see that all but two categorical variables have a r
 
 Now that we have our selected features to build our model, we will use them to predict our target class, the binary variable Y indicating if an individual is obese. There are many different classification models, but in this report, we focus on logistic regression, nearest neighbors, and decision trees.
 
-## Logistic Regression
+### Logistic Regression
 
 Logistic regression is a regression model that can be turned into a classification model. This is done through the logit function which takes probabilities between 0 and 1 and transforms them to any real number. The result of this is a model that when given values of covariates, it produces a probability that can be compared to a threshold to determine what binary class that observation is to be labelled. This is particularly useful in our desired model as our target variable $Y$ is binary. Therefore, a logistic model could be used to predict the value of Y, that is, predict whether or not that individual is obese given the values of covariates. However, Logistic regression uses the regression equation and therefore requires assumptions about the data to be satisfied. These assumptions include : linearity of the logit, independence of errors, absence of multicollinearity, lack of overdispersion,  and adequacy of the model. For simplicity we will assume these properties are satisfied for our dataset.
 
@@ -496,7 +495,7 @@ lasso_model = glmnet(X, y, alpha = 1, family = "binomial", lambda = min_lambda)
 
 ```
 
-## Nearest Neighbors
+### Nearest Neighbors
 
 While some classification models require assumptions, other models such as Nearest Neighbors do not make any assumptions about the structure of the data. Nearest Neighbors is a simple model that involves determining the class of an observation based on the class of the observations that surround it. Typically, the Euclidean distance is the measure used to calculate the distance between two observations base on values of their features. Since distance is calculated between the covariate values, it becomes clear that the covariates must be numeric. In our training data we have 8 categorical variables that we will exclude them from this model. Therefore we will only consider the 5 numerical features that were selected: AGE, FCVC, CH2O, FAF, adn TUE. However, there are techniques to convert categorical variables to numeric while keeping there relationship consistent and this should be explored in future analysis for improving our models. The class of a given observation is then determined by considering what the majority class of the K observations that are closest. K is a hyper-parameter of the model that determines how many nearest neighbors to consider when classifying a given observation.
 
@@ -565,7 +564,7 @@ accuracy_knn = mean(pred_class == actual)
 
 ```
 
-## Decision Tree
+### Decision Tree
 
 Nearest Neighbors is flexible as there are not assumptions but it is not the most interpretable as it is difficult to tell which features are the most important in determining the resulting class. Like Nearest Neighbors, Decision trees are another classification model that are flexible and do not make assumptions about the data. The main advantage of decision trees is its easy interpretation. Decision trees are known as universal approximators as it is easy to use them to create a model with perfect classification. However, it is important to consider and evaluate the bias-variance trade-off when consider the size and depth of the tree to avoid perfect classification model that overfit the data. 
 
@@ -615,7 +614,7 @@ kable(table_rf, align = "clc", caption = "\\label{tab4}Random Forest Confusion M
 ```
 
 
-# Results 
+### Results 
 
 There are various numerical measures of classification models including accuracy, precision, and recall. When deciding on the most effective measure it is important to consider if our dataset is balanced. Since the target variable $Y$ is divided into two classes of obese and non-obese which have proportions `r round(prop_y1,2)` and `r round(prop_y0,2)`, respectively, we can say that the binary class of obesity has a balanced population. Therefore accuracy is an appropriate measure of our classification models. In our analysis we will compare the following four models that we developed: the original Logistic model, the nearest neighbors model with the optimal K value, the basic decision tree, and the random forest model. Table \ref{tab5} is a table containing the accuracy results from applying each model to the test data.
 
@@ -686,7 +685,7 @@ From the plot, we see that the nearest neighbor model had the worst performance 
 In the variable selection for our classification models, we determined through statistical testing that obesity is likely not dependent on the following variables: Gender, SMOKE, and NCP. Furthermore, from developing the these classification models, we discovered from the logistic regression coefficients and from the chosen root predicate of the decision tree that the variable family_history_with_overweight has a significant role in predicting the obesity of an individual. 
 
 
-## Conclusion
+# Conclusion
 
 In conclusion, this report explored possible relationships between obesity and characteristics/behaviours of individuals. Using regression, we searched for the best model to predict BMI levels directly. However, we were unable to reduce the error in the models significantly. This indicates that available variables may not be the best for predicting the BMI of individuals and that other variables should be explored. We then explored classification models to predict the binary outcome of whether or not an individual is obese. We used the following three main methods in developing models: logistic regression, nearest neighbors, and decision trees. The model that had the best performance was the decision tree model, which produced excellent capabilities in predicting whether or not an individual was obese.
 This model could be used as a tool to predict obesity in situations when weight and height are not available. In screening patient data without weight and height the ability to diagnose someone with obesity allows the early initiation of health protocols to prevent the obesity associated diseases from developing in individuals. 
